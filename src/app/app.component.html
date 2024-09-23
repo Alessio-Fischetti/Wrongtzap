@@ -10,14 +10,20 @@
               <app-filter-chat (click)="selectedFilter = item" [label]="item" [selected]="item == selectedFilter"></app-filter-chat>
             }  
           </div>
-          <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-            <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-              <ion-label>{{ p.title }}</ion-label>
-            </ion-item>
-          </ion-menu-toggle>
+          @for (chat of mockedChats; track $index) {
+            <ion-menu-toggle autoHide="false" >
+              <app-chat-item (onClickChat)="selectedChat = $event" [chat]="chat"></app-chat-item>
+            </ion-menu-toggle>  
+          }
         </ion-list>
       </ion-content>
     </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+    @if (selectedChat) {
+      <ion-content>
+        <app-chat-view id="main-content" [chat]="selectedChat"></app-chat-view>
+      </ion-content>
+    }
+    <ion-content>
+      </ion-content>
+    </ion-split-pane>
 </ion-app>

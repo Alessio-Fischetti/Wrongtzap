@@ -5,6 +5,8 @@ import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonN
 import { addIcons } from 'ionicons';
 import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
 import { FilterChatComponent } from './filter-chat/filter-chat.component';
+import { ChatItemComponent } from './chat-item/chat-item.component';
+import { ChatViewComponent } from './chat-view/chat-view.component';
 
 @Component({
   selector: 'app-root',
@@ -15,23 +17,36 @@ import { FilterChatComponent } from './filter-chat/filter-chat.component';
      RouterLinkActive,
       CommonModule,
        IonApp,
+       ChatItemComponent,
+       ChatViewComponent,
         IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterLink, IonRouterOutlet,FilterChatComponent],
 
 })
 export class AppComponent {
-  public appPages = [
-    { title: 'Inbox', url: '/folder/inbox', icon: 'mail' },
-    { title: 'Outbox', url: '/folder/outbox', icon: 'paper-plane' },
-    { title: 'Favorites', url: '/folder/favorites', icon: 'heart' },
-    { title: 'Archived', url: '/folder/archived', icon: 'archive' },
-    { title: 'Trash', url: '/folder/trash', icon: 'trash' },
-    { title: 'Spam', url: '/folder/spam', icon: 'warning' },
-  ];
-  public labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
   protected filters = ['All', 'Chats', 'Groups', 'Unreads']
   protected selectedFilter: string = 'All' 
+  protected selectedChat?: Chat
+  
+  protected mockedChats = [
+    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date()}]},
+    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date()}]},
+    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date()}]},
+    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date()}]}
+  ]
+
   constructor() {
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
   }
+}
+
+
+export interface Chat{
+  chatName: string
+   messages: Message[]
+}
+
+export interface Message{
+  message: string
+  timeStamp: Date
 }
