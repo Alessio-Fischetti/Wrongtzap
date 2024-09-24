@@ -1,29 +1,31 @@
 <ion-app>
   <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
+    <ion-menu  contentId="main-content" type="overlay">
       <ion-content>
-        <ion-list id="inbox-list">
+        <ion-list lines="inset" id="inbox-list">
           <ion-list-header>Utente Loggato</ion-list-header>
           <ion-note class="mb-0">EmailUtente.it</ion-note>
-          <div class="filters mb-4">
-            @for (item of filters; track $index) {
-              <app-filter-chat (click)="selectedFilter = item" [label]="item" [selected]="item == selectedFilter"></app-filter-chat>
-            }  
-          </div>
+
+          <ion-grid class="mb-3">
+            <ion-row class="ion-align-self-start">
+                @for (item of filters; track $index) {
+                  <ion-col sizeSm="12" sizeMd="5" sizeLg="4" sizeXl="3" class="ion-float-left">
+                    <app-filter-chat (click)="selectedFilter = item" [label]="item" [selected]="item == selectedFilter"></app-filter-chat>
+                  </ion-col>
+                }  
+            </ion-row>
+          </ion-grid>
           @for (chat of mockedChats; track $index) {
-            <ion-menu-toggle autoHide="false" >
-              <app-chat-item (onClickChat)="selectedChat = $event" [chat]="chat"></app-chat-item>
-            </ion-menu-toggle>  
+
+              <ion-menu-toggle autoHide="false" >
+                <app-chat-item (onClickChat)="selectedChat = $event" [chat]="chat"></app-chat-item>
+              </ion-menu-toggle>  
           }
         </ion-list>
       </ion-content>
     </ion-menu>
-    @if (selectedChat) {
       <ion-content>
         <app-chat-view id="main-content" [chat]="selectedChat"></app-chat-view>
-      </ion-content>
-    }
-    <ion-content>
       </ion-content>
     </ion-split-pane>
 </ion-app>

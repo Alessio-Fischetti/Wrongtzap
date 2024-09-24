@@ -4,7 +4,7 @@ import { ExampleComponent } from './components/example-component/example.compone
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'folder/inbox',
+    redirectTo: 'chat',
     pathMatch: 'full',
   },
   {
@@ -12,8 +12,8 @@ export const routes: Routes = [
     component: ExampleComponent
   },
   {
-    path: 'folder/:id',
+    path: 'chat',
     loadComponent: () =>
-      import('./components/folder/folder.page').then((m) => m.FolderPage),
+      import('./chat-view/chat-view.component').then((m) => m.ChatViewComponent),
   },
 ];
