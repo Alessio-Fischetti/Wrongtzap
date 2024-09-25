@@ -1,0 +1,11 @@
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    @if (chatName) {
+      <ion-avatar class="chat-avatar" aria-hidden="true" slot="start">
+        <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+      </ion-avatar>  
+    }
+    <ion-title>{{ chatName || 'Chats' }}</ion-title>
+  </ion-toolbar>

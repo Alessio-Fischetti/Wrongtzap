@@ -1,0 +1,11 @@
+ion-input.send-message-input{
+    border-radius: 12px;
+    background-color: #323438;
+    text-indent: 15px;
+}
+
+ion-popover {
+    &::part(content) {
+      min-width: fit-content;
+    }
+  }

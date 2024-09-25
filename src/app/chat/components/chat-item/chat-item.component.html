@@ -1,4 +1,4 @@
-<ion-item  (click)="onClickChat.emit(chat)" button="true" class="chat" detail="false">
+<ion-item (click)="onClickChat.emit(chat)" button="true" class="chat" detail="false">
   <ion-avatar aria-hidden="true" slot="start">
     <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
   </ion-avatar>
@@ -6,5 +6,5 @@
     <strong>{{ chat.chatName }}</strong> <br>
     <ion-note color="medium" class="ion-text-wrap">{{chat.messages[0].message}}</ion-note>
   </ion-label>
-  <ion-badge color="success" slot="end">{{chat.messages.length}}</ion-badge>
+  <ion-badge color="tertiary" slot="end">{{chat.messages.length}}</ion-badge>
 </ion-item>

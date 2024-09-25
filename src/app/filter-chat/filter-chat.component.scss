@@ -1,4 +1,4 @@
 .selected {
-    --background: #00213f;
-    --color: #adefd1;
+    --background: var(--ion-color-tertiary, #6030ff);
+    --color: var(--ion-color-tertiary-contrast,#fff);
   }

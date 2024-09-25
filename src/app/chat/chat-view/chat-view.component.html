@@ -1,0 +1,16 @@
+<ion-app>
+
+  <ion-header [translucent]="true">
+    <chat-header [chatName]="chat?.chatName"/>
+  </ion-header>
+  <ion-content class="ion-padding">
+    <chat-content [messages]="chat?.messages" />
+  </ion-content>
+
+  @if (chat) {
+    <ion-footer>
+      <chat-footer (sendMessage)="newMessage($event)"  />
+    </ion-footer>
+  
+  }
+ </ion-app>

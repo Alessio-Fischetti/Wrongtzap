@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Chat } from '../app.component';
+import { Chat } from '../../../app.component';
 import { IonItem,IonLabel, IonAvatar, IonNote, IonBadge } from "@ionic/angular/standalone";
 import { RouterLink, RouterLinkActive } from '@angular/router';
 

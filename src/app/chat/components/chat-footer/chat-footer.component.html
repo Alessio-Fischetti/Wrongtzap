@@ -1,0 +1,17 @@
+
+  <ion-toolbar >
+    <ion-item class="item-message-input" lines="none" >
+      <ion-button id="emoji-button" size="default" color="tertiary" slot="start" fill="clear">
+        <ion-icon slot="icon-only" icon="happy"/>              
+      </ion-button>
+      <ion-popover [keepContentsMounted]="true" size="auto" triggerAction="click" trigger="emoji-button">
+        <ng-template>
+          <emoji-mart (emojiClick)="addEmoji($event)" ></emoji-mart>
+        </ng-template>
+      </ion-popover>
+      <ion-input [(ngModel)]="inputMessage" class="send-message-input" (keyup.enter)="emitMessage()" placeholder="Send a message" />
+      <ion-button (click)="emitMessage()" color="tertiary" slot="end">
+        <ion-icon slot="icon-only" icon="send"/>      
+      </ion-button>
+    </ion-item>
+  </ion-toolbar>
