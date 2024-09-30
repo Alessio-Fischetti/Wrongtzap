@@ -5,6 +5,6 @@
   <ion-label >
     <strong>{{ chat.chatName }}</strong> <br>
     <ion-note color="medium" class="ion-text-wrap">{{chat.messages[0].message}}</ion-note>
-  </ion-label>
-  <ion-badge color="tertiary" slot="end">{{chat.messages.length}}</ion-badge>
+  </ion-label>  
+  <ion-badge color="tertiary" slot="end">{{ unseenMessages }}</ion-badge>
 </ion-item>

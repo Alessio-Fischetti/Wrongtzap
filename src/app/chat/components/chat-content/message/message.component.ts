@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+/* eslint-disable @angular-eslint/component-selector */
+import { Component, ElementRef, Input, OnInit } from '@angular/core';
 import { Message, Status } from 'src/app/app.component';
 import { IonChip, IonIcon } from "@ionic/angular/standalone";
 import { DatePipe } from '@angular/common';
@@ -18,11 +20,14 @@ export class MessageComponent  implements OnInit {
 
   @Input() message!: Message
 
-  constructor() {
+  
+
+  constructor(public elementRef: ElementRef) {
     addIcons({checkmarkSharp, checkmarkDoneSharp})
    }
 
   ngOnInit() {}
+  
   isPm(){
     const h = this.message.timeStamp.getHours()
     if( h >= 0 && h<=12 )

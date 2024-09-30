@@ -40,10 +40,9 @@ export class AppComponent {
   }
 }
 
-
 export interface Chat{
   chatName: string
-   messages: Message[]
+  messages: Message[]
 }
 
 export class Message{
@@ -65,5 +64,6 @@ export enum Status{
   NONE,
   SENT,
   DELIVERED,
-  RECEIVED
+  RECEIVED,
+  SEEN
 }

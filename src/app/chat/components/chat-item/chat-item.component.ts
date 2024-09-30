@@ -1,3 +1,5 @@
+/* eslint-disable @angular-eslint/no-empty-lifecycle-method */
+/* eslint-disable @angular-eslint/no-output-on-prefix */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chat } from '../../../app.component';
 import { IonItem,IonLabel, IonAvatar, IonNote, IonBadge } from "@ionic/angular/standalone";
@@ -20,7 +22,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class ChatItemComponent  implements OnInit {
 
 @Input() chat!: Chat
-@Output() onClickChat: EventEmitter<Chat> = new EventEmitter<Chat>()
+@Output() onClickChat = new EventEmitter<Chat>()
+
+get unseenMessages(): number {
+  return this.chat.messages.filter( message => message.status != 4).length
+}
+
   constructor() { }
 
   ngOnInit() {}
