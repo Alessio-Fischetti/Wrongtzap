@@ -1,0 +1,39 @@
+  <div class="login-header mb-5">
+    <h1 class="text-center">Wrongtzapp</h1>
+  </div>
+
+  <div class="login-form justify-content-center">
+    <p-card styleClass=" bg-light-secondary" class="ion-padding">
+      <ng-template pTemplate="header">
+        <h4 class="p-3 fw-bold">
+          Login
+        </h4>
+      </ng-template>
+      
+      <form [formGroup]="formGroup" class="row g-3">
+        <ion-input type="email" label="Email" label-placement="floating" fill="outline" placeholder="Enter Email" formControlName="userMail" errorText="Invalid Email" />
+
+        <ion-input label="Password" label-placement="floating" fill="outline" placeholder="Enter Password" formControlName="userPassword" errorText="Invalid Password" />
+      </form>      
+
+      <small id="forgot-password" class=" helper text-end row">
+        <a routerLink="/reset">
+          Forgot password?
+        </a>
+      </small>
+      <ng-template pTemplate="footer">
+        <div class="d-flex justify-content-center">
+          <ion-button (click)="login()" class="w-100" color="light">
+              Login
+          </ion-button>
+        </div>
+        <ion-loading message="Loading..." [isOpen]="loading" spinner="circles"></ion-loading>
+
+          <small class="row text-center helper py-4">
+            <ion-button color="tertiary" routerLink="/register">Or Sign Up</ion-button>
+          </small>
+      </ng-template>
+      
+    
+    </p-card>
+  </div>

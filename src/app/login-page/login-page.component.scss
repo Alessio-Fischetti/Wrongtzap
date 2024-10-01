@@ -1,0 +1,16 @@
+.login-form{
+    height: 100dvh;
+    display: flex;
+}
+.login-header{
+    padding-top: 5dvh;
+}
+::ng-deep .bg-light-secondary{
+    background-color: var(--ion-color-dark) ;
+    color: --ion-color-light ;     
+}
+
+.helper a{
+    color: --ion-color-dark;
+    
+}

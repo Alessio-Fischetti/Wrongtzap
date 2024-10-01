@@ -9,10 +9,9 @@ export class UserService {
 
   constructor(private http: HttpClient) { }
 
-  private apiUrl = `${environment.apiUrl}/users`
+  private apiUrl = `${environment.apiUrl}/api`
 
-  getUserById(id: string){
-    return this.http.get(`${this.apiUrl}/${id}`)
-  }
+  register(registerJson: {userName: string, userMail: string, userPassword: string}){ return this.http.post(`/api/noauth/register`, registerJson) }
+  login(login: {userMail: string, userPassword: string}){ return this.http.post(`/api/noauth/login`, login) }
 
 }

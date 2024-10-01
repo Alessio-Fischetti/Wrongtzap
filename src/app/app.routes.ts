@@ -1,14 +1,26 @@
 import { Routes } from '@angular/router';
+import { LoginPageComponent } from './login-page/login-page.component';
+import { RegisterComponent } from './register/register.component';
+import { isUserAuthorized } from './auth/auth-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'chat',
+    redirectTo: 'login',
     pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    loadComponent: () => import("./login-page/login-page.component").then((m) => m.LoginPageComponent)
+  },
+  {
+    path: 'register',
+    component: RegisterComponent
   },
   {
     path: 'chat',
     loadComponent: () =>
-      import('./chat/chat-view/chat-view.component').then((m) => m.ChatViewComponent),
+      import('./chat/chat.component').then((m) => m.ChatComponent),
+    canActivate: [isUserAuthorized]
   },
 ];
