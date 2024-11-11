@@ -1,7 +1,7 @@
 /* eslint-disable @angular-eslint/no-empty-lifecycle-method */
 /* eslint-disable @angular-eslint/no-output-on-prefix */
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Chat } from '../../../app.component';
+import { Chat } from 'src/app/models/chat';
 import { IonItem,IonLabel, IonAvatar, IonNote, IonBadge } from "@ionic/angular/standalone";
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
@@ -14,9 +14,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
     IonItem,
     IonLabel,
     RouterLink,
-     RouterLinkActive,
-     IonNote,
-     IonBadge
+    RouterLinkActive,
+    IonNote,
+    IonBadge
     ]
 })
 export class ChatItemComponent  implements OnInit {

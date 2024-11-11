@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { Router, RouterModule } from '@angular/router';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 import { SessionService } from '../services/session.service';
 @Component({
   selector: 'app-login-page',
@@ -17,32 +17,34 @@ export class LoginPageComponent  implements OnInit {
 
   formGroup: FormGroup
 
-  constructor(private userService: UserService, private router: Router, private session: SessionService, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService, private router: Router, private session: SessionService, private cd: ChangeDetectorRef) {
     this.formGroup = new FormGroup({
       userMail: new FormControl("", [Validators.required, Validators.pattern(/^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,}$/)]),
       userPassword: new FormControl("", [Validators.required, Validators.pattern(/^[\w<~`!@#$%^&*()_\-+={[}]|:;"'<,>.?\/]{8,20}$/)])
     })
    }
 
-
   ngOnInit() {
     this.formGroup.valid
   }
 
   loading = false
+  
   login(){
-    if(this.formGroup.valid && this.userMail && this.userPassword){
-      this.loading = true
-      this.userService.login({
-        userMail: this.userMail.value,
-        userPassword: this.userPassword.value
+    if(
+      this.formGroup.valid && 
+      this.userMail && 
+      this.userPassword
+      ){
+        this.loading = true
+        this.authService.login({
+          userMail: this.userMail.value,
+          userPassword: this.userPassword.value
       })
       .subscribe({
         next: (res) => {
-          const data = res as {token: string, userMail: string}
-          //TODO salvare il token
-          this.session.saveToken(data.token)
           this.loading = false
+        
           this.cd.detectChanges()
         },
         error: (err) => {
@@ -50,8 +52,10 @@ export class LoginPageComponent  implements OnInit {
           this.loading = false
       },
         complete: () => {
-
-          this.router.navigate(["/chat"])
+          this.session.saveDisplayData()
+          this.router.navigate(["/chat"]).then(() => {
+            this.session.handleSession()
+          })
         }
       })
     }

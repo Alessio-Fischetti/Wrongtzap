@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { IonicModule } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
-import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -16,7 +16,7 @@ import { UserService } from '../services/user.service';
 export class RegisterComponent  implements OnInit {
 
   formGroup: FormGroup
-  constructor(private userService: UserService) {
+  constructor(private authService: AuthService) {
     this.formGroup = new FormGroup({
       "userName": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
       "userMail": new FormControl("", [Validators.required, Validators.pattern(/^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,}$/)]),
@@ -31,7 +31,7 @@ export class RegisterComponent  implements OnInit {
   register(){
     if(this.formGroup.valid && this.userName && this.userMail && this.userPassword){
       this.loading = true
-      this.userService.register({
+      this.authService.register({
         userName: this.userName.value,
         userMail: this.userMail!.value,
         userPassword: this.userPassword.value
@@ -59,5 +59,4 @@ export class RegisterComponent  implements OnInit {
   get userPassword(){
     return this.formGroup.get("userPassword")
   }
-
 }

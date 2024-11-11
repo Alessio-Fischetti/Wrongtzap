@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { RegisterComponent } from './register/register.component';
-import { isUserAuthorized } from './auth/auth-guard';
+import { AuthGuard, } from './auth/auth-guard';
 
 export const routes: Routes = [
   {
@@ -21,6 +21,6 @@ export const routes: Routes = [
     path: 'chat',
     loadComponent: () =>
       import('./chat/chat.component').then((m) => m.ChatComponent),
-    canActivate: [isUserAuthorized]
+    canActivate: [AuthGuard]
   },
 ];

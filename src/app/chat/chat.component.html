@@ -2,8 +2,8 @@
     <ion-menu  contentId="main-content" type="overlay">
       <ion-content>
         <ion-list lines="inset" id="inbox-list">
-          <ion-list-header>Utente Loggato</ion-list-header>
-          <ion-note class="mb-0">EmailUtente.it</ion-note>
+          <ion-list-header>{{userData.username}}</ion-list-header>
+          <ion-note class="mb-0">{{userData.userId}}</ion-note>
           <ion-grid class="mb-3">
             <ion-row class="ion-align-self-start">
                 @for (item of filters; track $index) {
@@ -14,7 +14,7 @@
             </ion-row>
           </ion-grid>
           
-          @for (chat of mockedChats; track $index) {
+          @for (chat of chatList; track $index) {
               <ion-menu-toggle autoHide="false" >
                 <app-chat-item (onClickChat)="selectedChat = $event" [chat]="chat"></app-chat-item>
               </ion-menu-toggle>  
