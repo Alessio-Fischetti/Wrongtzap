@@ -5,7 +5,7 @@ import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { IonicModule } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../auth/auth.service';
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

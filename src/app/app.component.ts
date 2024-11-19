@@ -7,6 +7,8 @@ import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutlin
 import { FilterChatComponent } from './filter-chat/filter-chat.component';
 import { ChatItemComponent } from './chat/components/chat-item/chat-item.component';
 import { ChatViewComponent } from './chat/chat-view/chat-view.component';
+import { Chat } from './models/chat';
+
 
 @Component({
   selector: 'app-root',
@@ -24,46 +26,11 @@ import { ChatViewComponent } from './chat/chat-view/chat-view.component';
 })
 export class AppComponent {
 
-  protected filters = ['All', 'Chats', 'Groups', 'Unreads']
+  protected filters = ['All', 'Direct Messages', 'Groups', 'Notifications']
   protected selectedFilter: string = 'All' 
   protected selectedChat?: Chat
-  
-  protected mockedChats = [
-    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date(), received: true, status: Status.RECEIVED}]},
-    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date(), received: true, status: Status.RECEIVED}]},
-    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date(), received: true, status: Status.RECEIVED}]},
-    {chatName: 'Mattia', messages: [{message: 'ciao', timeStamp: new Date(), received: true, status: Status.RECEIVED}]}
-  ]
 
   constructor() {
     addIcons({ mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp });
   }
-}
-
-export interface Chat{
-  chatName: string
-  messages: Message[]
-}
-
-export class Message{
-  message: string
-  timeStamp: Date
-  received: boolean
-  status: Status
-
-  constructor(message: string, timeStamp: Date, received: boolean, status?: Status){
-    this.message = message
-    this.timeStamp = timeStamp
-    this.received = received
-    this.status = status || Status.RECEIVED
-  }
-
-}
-
-export enum Status{
-  NONE,
-  SENT,
-  DELIVERED,
-  RECEIVED,
-  SEEN
 }

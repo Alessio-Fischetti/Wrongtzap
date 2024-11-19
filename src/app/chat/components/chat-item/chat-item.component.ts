@@ -4,6 +4,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Chat } from 'src/app/models/chat';
 import { IonItem,IonLabel, IonAvatar, IonNote, IonBadge } from "@ionic/angular/standalone";
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Status } from 'src/app/models/status';
+import { Message } from 'src/app/models/message';
 
 @Component({
   selector: 'app-chat-item',
@@ -25,7 +27,14 @@ export class ChatItemComponent  implements OnInit {
 @Output() onClickChat = new EventEmitter<Chat>()
 
 get unseenMessages(): number {
-  return this.chat.messages.filter( message => message.status != 4).length
+  return this.chat.messages.reduce((count, message) => {
+    
+      return message.getStatus() !== Status.SEEN ? count + 1 : count;
+     {
+      console.warn('Message is not an instance of Message class', message);
+      return count;
+    }
+  }, 0);
 }
 
   constructor() { }

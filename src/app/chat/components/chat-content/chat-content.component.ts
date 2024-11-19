@@ -1,8 +1,9 @@
 /* eslint-disable @angular-eslint/component-selector */
 import { AfterViewInit, Component, ElementRef, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { IonContent } from "@ionic/angular/standalone";
-import { Message } from 'src/app/app.component';
+import { Message } from 'src/app/models/message';
 import { MessageComponent } from './message/message.component';
+import { Status } from 'src/app/models/status';
 
 @Component({
   selector: 'chat-content',
@@ -30,12 +31,12 @@ observeMessage(messageComponent: MessageComponent, index: number) {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             console.log('Entry:', entry);
-            console.log('entry message:', this.messages[index].message)
+            console.log('entry message:', this.messages[index].getBody())
             console.log('Bounding Client Rect:', entry.boundingClientRect);
             console.log('Intersection Ratio:', entry.intersectionRatio);
             if (entry.isIntersecting) {
 
-                this.messages[index].status = 4;
+                this.messages[index].setStatus(Status.SEEN)
                 messageComponent.elementRef.nativeElement.style.display = 'block';
                 observer.unobserve(messageComponent.elementRef.nativeElement);
                 

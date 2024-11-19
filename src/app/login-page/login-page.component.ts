@@ -4,7 +4,7 @@ import { IonicModule } from '@ionic/angular'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CardModule } from 'primeng/card';
 import { Router, RouterModule } from '@angular/router';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../auth/auth.service';
 import { SessionService } from '../services/session.service';
 @Component({
   selector: 'app-login-page',
@@ -52,7 +52,7 @@ export class LoginPageComponent  implements OnInit {
           this.loading = false
       },
         complete: () => {
-          this.session.saveDisplayData()
+          this.session.saveProfile()
           this.router.navigate(["/chat"]).then(() => {
             this.session.handleSession()
           })

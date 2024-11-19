@@ -1,9 +1,10 @@
-import { Message } from "../app.component"
+import { Message } from "./message"
 import { User } from "./user"
 
-export interface Chat{
-    name: string
+export interface Chat {
+    readonly chatId: string,
+    name: string,
     messages: Message[]
     participants: User[]
-    isGroup: boolean
+    readonly isGroup: boolean
 }

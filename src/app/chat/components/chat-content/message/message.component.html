@@ -1,12 +1,12 @@
-<div class="message {{message.received ? 'received':'sent'}}">
-  {{message.message}}
+<div class="message {{isReceived(message)? 'received':'sent'}}">
+  {{message.getBody()}}
   <div class="metadata">
-    <div class="time {{!message.received ? 'sent' : 'received'}}">
-      {{message.timeStamp | date: "HH:mm" }} {{isPm()}}
+    <div class="time {{(!isReceived(message)) ? 'sent' : 'received'}}">
+      {{message.timestamp | date: "HH:mm" }} {{isPm()}}
     </div>
-    @if (!message.received) {
+    @if (!isReceived(message)) {
       <div class="tick">
-        <ion-icon [name]="status()" [class]="message.status ===4 ? 'blue' :''"></ion-icon>
+        <ion-icon [name]="status()" [class]="isSeen(message) ? 'blue' :''"></ion-icon>
       </div>  
     }
     </div>

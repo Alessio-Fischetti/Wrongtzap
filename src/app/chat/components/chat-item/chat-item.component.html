@@ -5,7 +5,7 @@
   <ion-label >
     <strong>{{chat.name}}</strong> <br>
     @if(chat.messages.length > 0){
-      <ion-note color="medium" class="ion-text-wrap">{{chat.messages[chat.messages.length -1].message}}</ion-note>
+      <ion-note color="medium" class="ion-text-wrap">{{chat.messages[chat.messages.length -1].getBody()}}</ion-note>
     } 
   </ion-label>
   @if(unseenMessages > 0){

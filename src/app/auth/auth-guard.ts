@@ -19,8 +19,9 @@ export class AuthGuard implements CanActivate{
         const isAuthorized = this.session.isAuthorized()
         if(isAuthorized) 
             return true
-        else 
+        else {
             this.router.navigate(["/login"])
             return false
+        }
     }
 }

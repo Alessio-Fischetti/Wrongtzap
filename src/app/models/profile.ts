@@ -1,4 +1,4 @@
-export class UserDisplay{
+export class Profile{
     readonly username: string
     readonly userId: string
 

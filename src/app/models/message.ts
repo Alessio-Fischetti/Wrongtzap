@@ -1,19 +1,34 @@
-import { Status } from "./status"
+import { Status } from "./status";
 
-export class message{
-    
-    sender: string
-    body: string
-    timestamp: Date
-    status: Status
+export class Message{
 
-    constructor(
-        body: string,
-        sender: string
-    ){
-        this.sender = sender
-        this.body = body
-        this.timestamp = new Date(Date.now())
-        this.status = Status.SENT
-    }
+  readonly sender: string;
+  readonly chatId: string;
+  readonly timestamp: Date;
+  private  body: string;
+  private  status: Status;
+
+  constructor(body: string, sender: string, chatId: string,  timestamp: number){
+    this.sender = sender,
+    this.chatId = chatId
+    this.body = body
+    this.timestamp = new Date(timestamp)
+    this.status = Status.SENT
+  }
+
+  getBody(): String{
+    return this.body
+  }
+
+  getStatus(): Status{
+    return this.status
+  }
+
+  setBody(body: string){
+    this.body = body 
+  }
+
+  setStatus(status: Status){
+    this.status = status
+  }
 }

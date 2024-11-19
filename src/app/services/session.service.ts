@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { interval, Observable, Subscription, switchMap, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { UserDisplay } from '../models/userDisplay';
+import { Profile } from '../models/profile';
 import { User } from '../models/user';
 
 @Injectable({
@@ -18,10 +18,10 @@ export class SessionService {
     return !!sessionStorage.getItem("token")
   }
 
-  saveDisplayData(){
+  saveProfile(){
     const token = this.getToken()
     if(token){
-    this.http.post(`${environment.apiUrl}/session/user-display`, this.wrapToken(token)).subscribe({
+    this.http.post(`${environment.apiUrl}/auth/profile`, this.wrapToken(token)).subscribe({
       next : (response) => {
         const data = response as {username: string, userId: string}
         sessionStorage.setItem("username",data.username)
@@ -34,13 +34,13 @@ export class SessionService {
   }
   }
 
-  getDisplayData(): UserDisplay{
+  getProfile(): Profile{
     const username = sessionStorage.getItem("username")
     const userId = sessionStorage.getItem("userid")
     if(username && userId) 
-      return new UserDisplay(username,userId)
+      return new Profile(username,userId)
     else 
-      return new UserDisplay('','')
+      return new Profile('','')
   }
 
   saveToken(token: string){
@@ -69,11 +69,11 @@ export class SessionService {
   }
 
   checkExpiration(token: string): Observable<any>{
-    return this.http.post(`${environment.apiUrl}/session/check-expiration`, this.wrapToken(token)).pipe(
-      tap((response) => {
-        let jwt = response as {token: string}
-        if(this.getToken() != jwt.token){
-          this.saveToken(jwt.token)
+    return this.http.post(`${environment.apiUrl}/auth/refresh`, this.wrapToken(token)).pipe(
+      tap((resolve) => {
+        let data = resolve as {jwt:string}
+        if(this.getToken() != data.jwt){
+          this.saveToken(data.jwt)
           this.increaseTokenRefreshCount()
         }
       })
@@ -86,6 +86,6 @@ export class SessionService {
   }
 
   wrapToken(token: string){
-    return {token: token}
+    return {jwt: token}
   }
 }

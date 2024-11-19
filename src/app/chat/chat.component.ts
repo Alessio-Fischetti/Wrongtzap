@@ -10,7 +10,9 @@ import { Chat } from '../models/chat';
 import { ChatService } from '../services/chat.service';
 import { Subscription } from 'rxjs';
 import { SessionService } from '../services/session.service';
-import { UserDisplay } from '../models/userDisplay';
+import { Profile } from '../models/profile';
+import { ConversionService } from '../services/conversion.service';
+import { MessageResponse } from '../responses/message.response';
 
 @Component({
   selector: 'app-chat',
@@ -30,13 +32,14 @@ export class ChatComponent implements OnInit, OnDestroy {
   protected selectedFilter: string = 'All' 
   protected selectedChat?: Chat
 
-  protected chatList: Chat[] = []
+  chatList: Chat[] = []
   protected chatSub!: Subscription
 
-  protected userData!: UserDisplay
+  protected userData!: Profile
 
   constructor(
     private chatService: ChatService,
+    private conversionService: ConversionService,
     private sessionService: SessionService
   ) {
     addIcons({ 
@@ -49,16 +52,30 @@ export class ChatComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.userData = this.sessionService.getDisplayData()
+    this.userData = this.sessionService.getProfile()
     this.chatSub = this.chatService.retrieveEveryChat().subscribe({
       next: (resolve) => {
-        this.chatList = resolve.data.everyChat
+        this.chatList = this.conversionService.convertChats(resolve.data.everyChat)
       },
       error: (err) => {
         console.log(err)
-      } 
+      }
+    })
+    this.chatService.messageListenerInit().subscribe({
+      next: (event) => {
+        if (event){
+          const message = this.conversionService.convertMessage(event)
+          const chat = this.chatList.find((chat) => chat.chatId == message.chatId)
+          if(chat){
+            chat.messages.push(message)
+          }
+        }
+        
+      }
     })
   }
+
+
 
   ngOnDestroy(): void {
     if(this.chatSub)
