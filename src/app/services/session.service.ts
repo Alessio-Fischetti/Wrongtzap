@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { interval, Observable, Subscription, switchMap, tap } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Profile } from '../models/profile';
-import { User } from '../models/user';
+import {firstValueFrom, interval, Observable, Subscription, switchMap, tap} from 'rxjs';
+import { environment } from 'src/app/config/environments/environment';
+import { Profile } from '../entities/models/profile';
+import {constructOutline} from "ionicons/icons";
 
 @Injectable({
   providedIn: 'root'
@@ -18,28 +18,35 @@ export class SessionService {
     return !!sessionStorage.getItem("token")
   }
 
-  saveProfile(){
-    const token = this.getToken()
-    if(token){
-    this.http.post(`${environment.apiUrl}/auth/profile`, this.wrapToken(token)).subscribe({
-      next : (response) => {
-        const data = response as {username: string, userId: string}
-        sessionStorage.setItem("username",data.username)
-        sessionStorage.setItem("userid", data.userId)
-      },
-      error: (err) => {
-        console.log(err)
+  async saveProfile(): Promise<void> {
+    const token = this.getToken();
+    if (token) {
+      try {
+        // Use firstValueFrom to convert the observable to a promise
+        const response = await firstValueFrom(
+          this.http.post(`${environment.apiUrl}/auth/profile`, this.wrapToken(token))
+        );
+
+        // Process the response and save to sessionStorage
+        const data = response as { username: string; userId: string };
+        sessionStorage.setItem('username', data.username);
+        sessionStorage.setItem('userid', data.userId);
+      } catch (err) {
+        // Handle errors
+        console.error('Error saving profile:', err);
       }
-    })
-  }
+    } else {
+      console.warn('No token available to save profile');
+    }
   }
 
   getProfile(): Profile{
     const username = sessionStorage.getItem("username")
     const userId = sessionStorage.getItem("userid")
-    if(username && userId) 
+
+    if(username && userId)
       return new Profile(username,userId)
-    else 
+    else
       return new Profile('','')
   }
 
@@ -77,7 +84,7 @@ export class SessionService {
           this.increaseTokenRefreshCount()
         }
       })
-    ) 
+    )
   }
 
   stopSession(){

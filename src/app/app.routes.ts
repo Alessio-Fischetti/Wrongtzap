@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
-import { LoginPageComponent } from './login-page/login-page.component';
-import { RegisterComponent } from './register/register.component';
-import { AuthGuard, } from './auth/auth-guard';
+import { RegisterComponent } from './auth/register/register.component';
+import { AuthGuard, } from './config/auth/auth-guard';
 
 export const routes: Routes = [
   {
@@ -11,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    loadComponent: () => import("./login-page/login-page.component").then((m) => m.LoginPageComponent)
+    loadComponent: () => import("./auth/login/login.component").then((m) => m.LoginComponent)
   },
   {
     path: 'register',
@@ -23,4 +22,5 @@ export const routes: Routes = [
       import('./chat/chat.component').then((m) => m.ChatComponent),
     canActivate: [AuthGuard]
   },
+
 ];

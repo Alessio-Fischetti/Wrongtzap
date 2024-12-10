@@ -1,0 +1,11 @@
+app-chat-item{
+  z-index: 999;
+}
+
+ion-content{
+  --background: transparent;
+}
+
+scrollable{
+  overflow-y: scroll !important;
+}

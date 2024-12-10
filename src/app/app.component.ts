@@ -4,10 +4,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { IonApp, IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterOutlet, IonRouterLink, IonGrid, IonRow, IonCol, IonFooter, IonToolbar, IonTitle } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
-import { FilterChatComponent } from './filter-chat/filter-chat.component';
+import { SectionComponent } from './sections/section.component';
 import { ChatItemComponent } from './chat/components/chat-item/chat-item.component';
-import { ChatViewComponent } from './chat/chat-view/chat-view.component';
-import { Chat } from './models/chat';
+import { ChatMainContentComponent } from './chat/components/chat-main-content/chat-main-content-component';
+import { Chat } from './entities/models/chat';
 
 
 @Component({
@@ -20,14 +20,14 @@ import { Chat } from './models/chat';
       CommonModule,
        IonApp,
        ChatItemComponent,
-       ChatViewComponent,
-        IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterLink, IonRouterOutlet,FilterChatComponent],
+       ChatMainContentComponent,
+        IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterLink, IonRouterOutlet,SectionComponent],
 
 })
 export class AppComponent {
 
   protected filters = ['All', 'Direct Messages', 'Groups', 'Notifications']
-  protected selectedFilter: string = 'All' 
+  protected selectedFilter: string = 'All'
   protected selectedChat?: Chat
 
   constructor() {

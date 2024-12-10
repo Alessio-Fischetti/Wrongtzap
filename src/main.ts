@@ -6,25 +6,25 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 
-import { authInterceptor } from './app/auth/auth.interceptor';
+import { authInterceptor } from './app/config/auth/auth.interceptor';
 import { ApolloClientOptions, ApolloLink, InMemoryCache } from '@apollo/client';
 import { HttpLink } from 'apollo-angular/http';
 import { SessionService } from './app/services/session.service';
 import { setContext } from '@apollo/client/link/context';
-import { environment } from './environments/environment';
+import { environment } from './app/config/environments/environment';
 import { provideApollo } from 'apollo-angular';
 
 import { GraphQLWsLink } from "@apollo/client/link/subscriptions";
 import { inject } from '@angular/core';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
-import { StompService, stompServiceFactory } from './app/services/stomp.service';
+import { StompService, stompServiceFactory } from './app/config/stomp/stomp.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: StompService, useFactory: stompServiceFactory },
-    
+
     provideIonicAngular(),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withInterceptors([authInterceptor])),
@@ -33,7 +33,7 @@ bootstrapApplication(AppComponent, {
 });
 
 export function createApollo(): ApolloClientOptions<any> {
-  
+
   const httpLink = inject(HttpLink);
   const sessionService = inject(SessionService);
 

@@ -1,30 +1,46 @@
   <ion-split-pane contentId="main-content">
-    <ion-menu  contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list lines="inset" id="inbox-list">
-          <ion-list-header>{{userData.username}}</ion-list-header>
-          <ion-note class="mb-0">{{userData.userId}}</ion-note>
-          <ion-grid class="mb-3">
-            <ion-row class="ion-align-self-start">
-                @for (item of filters; track $index) {
-                  <ion-col sizeSm="12" sizeMd="5" sizeLg="4" sizeXl="3" class="ion-float-left">
-                    <app-filter-chat (click)="selectedFilter = item" [label]="item" [selected]="item === selectedFilter"></app-filter-chat>
+          <ion-menu contentId="main-content" type="overlay">
+            <ion-content fullscreen [scrollY]="false">
+              <ion-grid class="h-100">
+                <ion-row class="h-100">
+
+                  <ion-col id="side-menu" sizeSm="1" class="d-flex flex-column justify-content-end align-items-center">
+                    <ion-segment [(ngModel)]="selectedPage" class="d-flex flex-column align-items-center justify-content-center">
+                      @for(option of options; track  $index){
+                        <ion-segment-button [value]="option[0]" class="d-flex align-items-center justify-content-center">
+                          <fa-icon [icon]="option[1]"></fa-icon>
+                        </ion-segment-button>
+                      }
+                    </ion-segment>
                   </ion-col>
-                }  
-            </ion-row>
-          </ion-grid>
-          
-          @for (chat of chatList; track $index) {
-              <ion-menu-toggle autoHide="false" >
-                <app-chat-item (onClickChat)="selectedChat = $event" [chat]="chat"></app-chat-item>
-              </ion-menu-toggle>  
-          }
-          
-        </ion-list>
-      </ion-content>
-    </ion-menu>
+
+
+                  <ion-col sizeSm="11">
+                    @if (loading) {
+                      <ion-loading></ion-loading>
+                    }
+                    @else {
+                      @switch (selectedPage){
+                        @case ('Creation'){
+                          <app-creation-menu [friends]="user.getFriends()"></app-creation-menu>
+                        }
+                        @case ('Friends'){
+                          <app-friends-menu  [userId]="user.userId" [friends]="user.getFriends()"></app-friends-menu>
+                        }
+                        @default {
+                          <app-main-menu [chats]="user.getChats()" (selectedChatChanged)="changeSelectedChat($event)"></app-main-menu>
+                        }
+                      }
+                    }
+                  </ion-col>
+
+                </ion-row>
+              </ion-grid>
+            </ion-content>
+          </ion-menu>
     <ion-content>
-      <app-chat-view id="main-content" [chat]="selectedChat"/>
+      <app-chat-main-content id="main-content" [chat]="selectedChat"/>
     </ion-content>
+
   </ion-split-pane>
 

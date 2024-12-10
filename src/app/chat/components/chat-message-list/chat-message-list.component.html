@@ -1,0 +1,7 @@
+<div class="container d-flex flex-column">
+  @for (message of messages; track $index) {
+    <div class="d-flex {{ isSent(message.senderId) ? 'sent' : 'received'}} ">
+      <message class="d-inline-flex" [sent]="isSent(message.senderId)" [message]="message"/>
+    </div>
+  }
+</div>

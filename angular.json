@@ -18,6 +18,11 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/theme"
+              ]
+            },
             "outputPath": "www",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -33,6 +38,7 @@
             ],
             "styles": [
               "src/global.scss",
+              "src/theme/animista.scss",
               "src/theme/variables.scss"
   ],
             "scripts": []

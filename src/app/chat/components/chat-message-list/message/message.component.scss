@@ -1,0 +1,29 @@
+@import 'animista';
+
+  .message {
+    border-radius: 0px 5px 5px 5px;
+  }
+
+  .message.received {
+    background: var(--ion-color-light, #fff);
+    color: var(--ion-color-light-contrast, #fff);
+    @include slide-in-right;
+  }
+
+  .message.sent {
+    background: var(--ion-color-tertiary, #000);
+    color: var(--ion-color-tertiary-contrast, #000);
+    @include slide-in-left;
+  }
+
+  .metadata .time.sent {
+    color: var(--ion-color-tertiary-contrast, #000);
+  }
+
+  .metadata .time {
+    font-size: 13px;
+  }
+
+  .blue{
+    color: rgb(56, 233, 233);
+  }

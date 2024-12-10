@@ -1,0 +1,21 @@
+<div class="message d-flex flex-column p-2 my-2 {{sent ? 'received':'sent'}}">
+
+  <div class="row px-2 d-flex justify-content-start">
+    {{message.sender}}
+  </div>
+
+  <div class="row p-2">
+    {{message.getBody()}}
+  </div>
+
+  <div class="metadata row d-flex justify-content-end align-items-center px-2">
+    <div class="time col-7 {{sent ? 'sent' : 'received'}}">
+      <div class="row d-flex justify-content-end">
+        {{message.timestamp | date: "HH:mm" }} {{isPm()}}
+      </div>
+    </div>
+    <div class="tick col-4 d-flex align-items-center justify-content-center">
+      <ion-icon [name]="status()" [class]="isSeen(message) ? 'blue' :''"></ion-icon>
+    </div>
+  </div>
+</div>
