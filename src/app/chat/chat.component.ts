@@ -4,7 +4,6 @@ import { IonicModule } from '@ionic/angular'
 import { addIcons } from 'ionicons';
 import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutline, heartSharp, archiveOutline, archiveSharp, trashOutline, trashSharp, warningOutline, warningSharp, bookmarkOutline, bookmarkSharp } from 'ionicons/icons';
 import { ChatMainContentComponent } from './components/chat-main-content/chat-main-content-component';
-import { Chat } from '../entities/models/chat';
 import {FontAwesomeModule, IconDefinition} from '@fortawesome/angular-fontawesome';
 import {faList, faUser, faGear, faCommentMedical, faUserGroup} from "@fortawesome/free-solid-svg-icons";
 import {MainMenuComponent} from "./menus/main-menu/main-menu.component";
@@ -17,7 +16,10 @@ import {User} from "../entities/models/user";
 import {firstValueFrom, Subscription} from "rxjs";
 import {UserService} from "../services/user.service";
 import {MappingService} from "../services/mapping.service";
-import {ChatService} from "../services/chat.service";
+import {DirectChat} from "../entities/models/direct.chat";
+import {GroupChat} from "../entities/models/group.chat";
+import {ChatListener} from "../config/listeners/chat.listener";
+import {UserListener} from "../config/listeners/user.listener";
 
 
 @Component({
@@ -44,18 +46,18 @@ export class ChatComponent implements OnInit, OnDestroy {
     ['List', faList],
     ['Profile', faUser]
   ]
+
   protected selectedPage: string = 'List'
-  protected selectedChat?: Chat
+  protected selectedChat?: DirectChat|GroupChat
   protected profile!: Profile
   protected user!: User
   protected loading: boolean = true;
 
-  protected subs: Subscription[] = []
-
   constructor(
     private session: SessionService,
     private userService: UserService,
-    private chatService: ChatService,
+    private chatListener: ChatListener,
+    private userListener: UserListener,
     private mapping : MappingService,
   ) {
     addIcons({
@@ -72,8 +74,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.profile = this.session.getProfile()
     this.loadUser(this.profile.userId).then(
       () => {
-        this.userListener(this.profile.userId)
-        this.messageListener()
+        this.chatListener.directChatListener(this.user)
+        this.chatListener.directMessageListener(this.user)
+        this.chatListener.groupChatListener(this.user)
+        this.chatListener.groupMessageListener(this.user)
+        this.userListener.friendListener(this.user, this.profile.userId)
         this.loading = false
       }
     )
@@ -81,49 +86,16 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    if(this.subs.length > 0){
-      this.subs.forEach(sub => sub.unsubscribe());
-    }
+    this.chatListener.unsubscribe()
+    this.userListener.unsubscribe()
   }
 
   async loadUser(id: string): Promise<void> {
     const response = await firstValueFrom(this.userService.retrieveUser(id));
-    this.user = this.mapping.convertUser(response.data.user);
+    this.user = this.mapping.userConversion(response.data.user);
   }
 
-
-  messageListener(){
-    this.subs.push(this.chatService.messageListenerInit().subscribe({
-      next: (event) => {
-        if (event){
-          const message = this.mapping.convertMessage(event)
-          const chat = this.user.getChats().find((chat) => chat.chatId == message.chatId)
-          if(chat){
-            chat.messages.push(message)
-          }
-        }
-
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    }))
-  }
-
-  userListener(userId: string){
-    this.subs.push(this.userService.userListenerInit(userId).subscribe({
-      next: (event) => {
-        if (event){
-          this.user = this.mapping.convertUser(event)
-        }
-      },
-      error: (err) => {
-        console.log(err)
-      }
-    }))
-  }
-
-  changeSelectedChat(chat: Chat) {
+  changeSelectedChat(chat: DirectChat|GroupChat) {
     this.selectedChat = chat
   }
 }

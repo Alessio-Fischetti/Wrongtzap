@@ -14,8 +14,14 @@ export class AuthService {
     private session: SessionService
   ) { }
 
-  register(registerJson: {userName: string, userMail: string, userPassword: string}){
-    return this.http.post(`${environment.apiUrl}/auth/register`, registerJson)
+  register(register: {userName: string, userMail: string, userPassword: string}): Observable<any>{
+    return this.http.post(`${environment.apiUrl}/auth/register`, register).pipe(
+      tap((resolve)=> {
+        const token = resolve as {jwt: string}
+        console.log(token)
+        this.session.saveToken(token.jwt)
+      })
+    )
   }
 
   login(login: {userMail: string, userPassword: string}): Observable<any>{
@@ -26,5 +32,6 @@ export class AuthService {
       })
     )
   }
+
 
 }

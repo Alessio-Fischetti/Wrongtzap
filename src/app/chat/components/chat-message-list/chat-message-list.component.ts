@@ -40,7 +40,7 @@ observeMessage(messageComponent: MessageComponent, index: number) {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
 
-                this.messages[index].setStatus(Status.SEEN)
+                this.messages[index].status = Status.SEEN
                 messageComponent.elementRef.nativeElement.style.display = 'block';
                 observer.unobserve(messageComponent.elementRef.nativeElement);
 

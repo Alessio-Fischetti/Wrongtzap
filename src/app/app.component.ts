@@ -7,7 +7,7 @@ import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, heartOutlin
 import { SectionComponent } from './sections/section.component';
 import { ChatItemComponent } from './chat/components/chat-item/chat-item.component';
 import { ChatMainContentComponent } from './chat/components/chat-main-content/chat-main-content-component';
-import { Chat } from './entities/models/chat';
+import { Chat } from './entities/models/base/chat';
 
 
 @Component({

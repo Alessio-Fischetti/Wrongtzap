@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
 import { IonicModule } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../config/auth/auth.service';
+import {SessionService} from "../../services/session.service";
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -13,14 +14,19 @@ import { AuthService } from '../../config/auth/auth.service';
   standalone: true,
   imports: [ButtonModule, IonicModule, CardModule, FormsModule, ReactiveFormsModule, RouterModule ]
 })
-export class RegisterComponent  implements OnInit {
+export class RegisterComponent implements OnInit {
 
   formGroup: FormGroup
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private session: SessionService,
+    private cd: ChangeDetectorRef
+  ) {
     this.formGroup = new FormGroup({
       "userName": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
-      "userMail": new FormControl("", [Validators.required, Validators.pattern(/^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,}$/)]),
-      "userPassword": new FormControl("", [Validators.required, Validators.pattern(/^[\w<~`!@#$%^&*()_\-+={[}]|:;"'<,>.?\/]{8,20}$/)])
+      "userPassword": new FormControl("", [Validators.required, Validators.pattern(/^\w{8,20}$/)]),
+      "userMail": new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)])
     })
    }
 
@@ -37,14 +43,21 @@ export class RegisterComponent  implements OnInit {
         userPassword: this.userPassword.value
       }).subscribe({
         next: (res) => {
-          console.log(res)
+          this.loading = false
+          this.cd.detectChanges()
         },
         error: (err) => {
           console.log(err);
           this.loading = false
         },
         complete: () => {
-          this.loading = false
+          this.formGroup.reset()
+          this.session.saveProfile().then(() => {
+              this.router.navigate(["/chat"]).then(() => {
+                this.session.handleSession()
+              })
+            }
+          )
         }
       })
     }

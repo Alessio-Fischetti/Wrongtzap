@@ -3,9 +3,10 @@ import {IonicModule} from "@ionic/angular";
 import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {UserSummary} from "../../../entities/summaries/user.summary";
-import {Chat} from "../../../entities/models/chat";
+import {Chat} from "../../../entities/models/base/chat";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCommentMedical} from "@fortawesome/free-solid-svg-icons";
+import {DirectChat} from "../../../entities/models/direct.chat";
 
 @Component({
   selector: 'app-creation-menu',
@@ -16,7 +17,7 @@ import {faCommentMedical} from "@fortawesome/free-solid-svg-icons";
 })
 export class CreationMenuComponent  implements OnInit {
   @Input()friends!: UserSummary[]
-  @Input()chats!: Chat[]
+  @Input()chats!: DirectChat[]
   @Output()chatEvent = new EventEmitter<Chat>()
 
   protected readonly onsubmit = onsubmit;
@@ -38,11 +39,11 @@ export class CreationMenuComponent  implements OnInit {
       friend => friend.userId.includes(friendId))
   }
 
-  DoesDirectMessageExist(userId: string) {
-    const chatExists = this.chats.find((chat) => {
-      const userExist = chat.participants.find((user) => user.userId == userId)
-      return (userExist != undefined && !chat.isGroup)
-    })
+  doesDirectChatExist(userId: string) {
+    const chatExists = this.chats.find(
+      (chat) =>
+        chat.participants[0].userId == userId || chat.participants[1].userId == userId
+    )
 
     if(chatExists != undefined){
       this.chatEvent.emit(chatExists)

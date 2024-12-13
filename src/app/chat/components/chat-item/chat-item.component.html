@@ -3,10 +3,10 @@
     <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
   </ion-avatar>
   <ion-label >
-    <strong>{{chat.name}}</strong> <br>
+    <strong>{{getName()}}</strong> <br>
     @if(chat.messages.length > 0){
-      <ion-note color="medium" class="ion-text-wrap">{{chat.messages[chat.messages.length -1].getBody()}}</ion-note>
-    } 
+      <ion-note color="medium" class="ion-text-wrap">{{chat.messages[chat.messages.length -1].body}}</ion-note>
+    }
   </ion-label>
   @if(unseenMessages > 0){
     <ion-badge color="tertiary" slot="end">{{ unseenMessages }}</ion-badge>

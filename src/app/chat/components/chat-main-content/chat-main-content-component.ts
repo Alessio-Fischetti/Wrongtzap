@@ -1,5 +1,5 @@
 import { Component, Input} from '@angular/core';
-import { Chat } from 'src/app/entities/models/chat';
+import { Chat } from 'src/app/entities/models/base/chat';
 import { IonHeader, IonToolbar, IonButtons, IonContent, IonTitle, IonMenuButton, IonAvatar, IonLabel, IonApp, IonFooter } from "@ionic/angular/standalone";
 import { ChatHeaderComponent } from '../chat-header/chat-header.component';
 import { ChatFooterComponent } from '../chat-footer/chat-footer.component';
@@ -8,6 +8,8 @@ import { SessionService } from 'src/app/services/session.service';
 import { Message } from 'src/app/entities/models/message';
 import { MessageRequest } from 'src/app/entities/requests/message.request';
 import { ChatService } from 'src/app/services/chat.service';
+import {DirectChat} from "../../../entities/models/direct.chat";
+import {GroupChat} from "../../../entities/models/group.chat";
 
 
 @Component({
@@ -38,7 +40,7 @@ export class ChatMainContentComponent {
     private chatService: ChatService
   ) { }
 
-  @Input() chat?: Chat
+  @Input() chat?: DirectChat|GroupChat
 
   newMessage(message: string){
     const user = this.sessionService.getProfile().userId
@@ -51,5 +53,13 @@ export class ChatMainContentComponent {
     }
 
     this.chatService.sendMessage(request)
+  }
+
+
+  getName(): string{
+    if(this.chat?.type == "group")
+      return this.chat.name
+    else
+      return `${this.chat?.participants[0].username}-${this.chat?.participants[1].username}`
   }
 }

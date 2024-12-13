@@ -22,13 +22,13 @@
                     @else {
                       @switch (selectedPage){
                         @case ('Creation'){
-                          <app-creation-menu [friends]="user.getFriends()"></app-creation-menu>
+                          <app-creation-menu [chats]="user.directChats" [friends]="user.friends"></app-creation-menu>
                         }
                         @case ('Friends'){
-                          <app-friends-menu  [userId]="user.userId" [friends]="user.getFriends()"></app-friends-menu>
+                          <app-friends-menu  [userId]="user.userId" [friends]="user.friends"></app-friends-menu>
                         }
                         @default {
-                          <app-main-menu [chats]="user.getChats()" (selectedChatChanged)="changeSelectedChat($event)"></app-main-menu>
+                          <app-main-menu [chats]="{direct: user.directChats, group: user.groupChats}" (selectedChatChanged)="changeSelectedChat($event)"></app-main-menu>
                         }
                       }
                     }

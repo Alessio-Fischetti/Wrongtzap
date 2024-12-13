@@ -7,6 +7,9 @@ import { MessageRequest } from '../entities/requests/message.request';
 import { StompService } from '../config/stomp/stomp.service';
 import { MessageResponse } from '../entities/responses/message.response';
 import {SessionService} from "./session.service";
+import {DirectChatResponse} from "../entities/responses/direct.chat.response";
+import {GroupChat} from "../entities/models/group.chat";
+import {GroupChatResponse} from "../entities/responses/group.chat.response";
 
 
 @Injectable({
@@ -37,11 +40,27 @@ export class ChatService {
           headers: this.headers })
     }
 
-    createDirectMessage(message: MessageRequest){
+    createChat(message: MessageRequest){
 
     }
 
-    messageListenerInit(){
+    chatListener(){
+      return this.stomp.watch(`/topic/chats`, this.headers).pipe(
+        map((event) => {
+          return JSON.parse(event.body) as DirectChatResponse | undefined
+        })
+      )
+    }
+
+    groupListener(){
+      return this.stomp.watch(`/topic/groups`, this.headers).pipe(
+        map((event) => {
+          return JSON.parse(event.body) as GroupChatResponse | undefined
+        })
+      )
+    }
+
+    chatMessageListener(){
         return this.stomp.watch(`/topic/chats/messages`, this.headers).pipe(
             map((event) => {
                 return JSON.parse(event.body) as MessageResponse | undefined
@@ -49,29 +68,11 @@ export class ChatService {
         )
     }
 
-  retrieveEveryChat(): Observable<any>{
-    const EVERY_CHAT_QUERY = gql`
-      query {
-        everyChat {
-          chatId
-          name
-          participants{
-            userId
-            username
-            email
-          }
-          messages{
-            sender
-            content
-            timestamp
-          }
-          isGroup
-        }
-      }`
-
-    return this.apollo.query({
-      query: EVERY_CHAT_QUERY,
-      fetchPolicy: 'network-only'
-    })
-  }
+    groupMessageListener(){
+      return this.stomp.watch(`/topic/groups/messages`, this.headers).pipe(
+        map((event) => {
+          return JSON.parse(event.body) as MessageResponse | undefined
+        })
+      )
+    }
 }

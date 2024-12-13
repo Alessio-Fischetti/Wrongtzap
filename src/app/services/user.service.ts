@@ -3,12 +3,11 @@ import { Apollo} from 'apollo-angular';
 import {firstValueFrom, map, Observable,} from 'rxjs'
 import { gql } from 'apollo-angular';
 import { HttpClient } from '@angular/common/http';
-import { MessageRequest } from '../entities/requests/message.request';
 import { StompService } from '../config/stomp/stomp.service';
-import { MessageResponse } from '../entities/responses/message.response';
 import {SessionService} from "./session.service";
 import {UserResponse} from "../entities/responses/user.response";
 import {environment} from "../config/environments/environment";
+import {UserSummary} from "../entities/summaries/user.summary";
 
 
 @Injectable({
@@ -56,14 +55,38 @@ export class UserService {
     )
   }
 
+  friendListenerInit(userId: string){
+    return this.stomp.watch(`/topic/users/${userId}/friends`, this.headers).pipe(
+      map((event) => {
+        return JSON.parse(event.body) as UserSummary | undefined
+      })
+    )
+  }
+
   retrieveUser(email: string): Observable<any> {
     const USER_QUERY = gql`
       query ($email: String!) {
         user(userId: $email) {
           userId
           username
-          chats {
+          directChats {
             chatId
+            creationDate
+            participants {
+              userId
+              username
+            }
+            messages {
+              username
+              userId
+              content
+              timestamp
+            }
+            archived
+          }
+          groupChats {
+            chatId
+            creationDate
             name
             participants {
               userId
@@ -73,13 +96,17 @@ export class UserService {
               userId
               timestamp
             }
+            admins{
+              userId
+              username
+            }
             messages {
               username
               userId
               content
               timestamp
             }
-            isGroup
+            archived
           }
           friends {
             userId

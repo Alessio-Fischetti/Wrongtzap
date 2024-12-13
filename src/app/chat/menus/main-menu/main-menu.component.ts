@@ -3,7 +3,7 @@ import {IonicModule} from "@ionic/angular";
 import {ChatItemComponent} from "../../components/chat-item/chat-item.component";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {SectionComponent} from "../../../sections/section.component";
-import {Chat} from "../../../entities/models/chat";
+import {Chat} from "../../../entities/models/base/chat";
 import {ChatService} from "../../../services/chat.service";
 import {MappingService} from "../../../services/mapping.service";
 import {SessionService} from "../../../services/session.service";
@@ -15,6 +15,8 @@ import {
   trashOutline, trashSharp, warningOutline, warningSharp
 } from "ionicons/icons";
 import {FormsModule} from "@angular/forms";
+import {DirectChat} from "../../../entities/models/direct.chat";
+import {GroupChat} from "../../../entities/models/group.chat";
 
 @Component({
   selector: 'app-main-menu',
@@ -29,9 +31,11 @@ export class MainMenuComponent  implements OnInit{
   protected selectedFilter: string = 'Groups'
   protected selectedChat?: Chat
 
-  @Output() selectedChatChanged = new EventEmitter<Chat>();
-  @Input()  chats: Chat[] = []
-  protected filteredChats: Chat[] = []
+  @Output() selectedChatChanged = new EventEmitter<DirectChat|GroupChat>();
+  @Input()  chats!: {direct: DirectChat[], group: GroupChat[]}
+
+  protected filteredDirectChats: DirectChat[] = []
+  protected filteredGroups: GroupChat[] = []
 
   protected loading: boolean = true;
   protected search: string =''
@@ -51,17 +55,24 @@ export class MainMenuComponent  implements OnInit{
   }
 
   ngOnInit(): void {
-    this.filteredChats = this.chats
+    this.filteredGroups = this.chats.group
+    this.filteredDirectChats = this.chats.direct
   }
 
-  searchChats(input: string){
-    this.filteredChats = this.chats.filter(
-      chat => chat.name.includes(input)
+  searchChats(name: string){
+    this.filteredDirectChats= this.chats.direct.filter(
+      chat =>
+        chat.participants[0].username.includes(name) || chat.participants[1].username.includes(name)
+    )
+  }
+
+  searchGroups(name: string){
+    this.filteredGroups = this.chats.group.filter(
+      group => group.name.includes(name)
     )
   }
 
   updateChatView(event: any){
-    console.log(event)
     this.selectedChatChanged.emit(event)
   }
 

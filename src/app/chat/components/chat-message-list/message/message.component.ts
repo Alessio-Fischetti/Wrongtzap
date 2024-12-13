@@ -37,10 +37,10 @@ export class MessageComponent  implements OnInit {
   }
 
   isSeen(message: Message): Boolean{
-    return message.getStatus() == Status.SEEN
+    return message.status == Status.SEEN
   }
   status(){
-    if(this.message.getStatus() == Status.NONE)
+    if(this.message.status == Status.NONE)
       return "checkmark-sharp"
     else
       return "checkmark-done-sharp"

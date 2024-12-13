@@ -45,9 +45,9 @@ export class SessionService {
     const userId = sessionStorage.getItem("userid")
 
     if(username && userId)
-      return new Profile(username,userId)
+      return {username: username,userId: userId}
     else
-      return new Profile('','')
+      return {username: '',userId:''}
   }
 
   saveToken(token: string){

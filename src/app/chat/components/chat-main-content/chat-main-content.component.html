@@ -1,7 +1,7 @@
 <ion-app>
 
   <ion-header [translucent]="true">
-    <chat-header [chatName]="chat?.name"/>
+    <chat-header [chatName]="chat? getName() : ''"/>
   </ion-header>
   <ion-content class="ion-padding">
     <chat-message-list [messages]="chat ? chat.messages : []"/>

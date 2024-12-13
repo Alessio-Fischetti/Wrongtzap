@@ -27,13 +27,13 @@
         <ion-col sizeSm="12">
           <ion-content>
             <ion-list lines="inset" id="inbox-list">
-              @for (chat of filteredChats; track $index) {
-                  @if(chat.isGroup){
+              @for (chat of filteredDirectChats; track $index) {
+                  @if(true){
                     <ion-menu-toggle autoHide="false">
                       <app-chat-item (onChatClick)="updateChatView($event)" [chat]="chat"></app-chat-item>
                     </ion-menu-toggle>
                   }
-              @if (filteredChats.length === 0){
+              @if (filteredDirectChats.length === 0){
                 <ion-item>
                   <ion-label>No chat matches your search</ion-label>
                 </ion-item>
