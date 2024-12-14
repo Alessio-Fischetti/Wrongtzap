@@ -43,16 +43,17 @@ export class ChatMainContentComponent {
   @Input() chat?: DirectChat|GroupChat
 
   newMessage(message: string){
-    const user = this.sessionService.getProfile().userId
+    if(this.chat){
+      const user = this.sessionService.getProfile().userId
+      const request: MessageRequest = {
+        userId: user,
+        chatId: this.chat!.chatId,
+        body: message,
+        type: this.chat.type
+      }
 
-    const request: MessageRequest = {
-      userId: user,
-      chatId: this.chat!.chatId,
-      body: message,
-      timestamp: Date.now()
+      this.chatService.sendMessage(request)
     }
-
-    this.chatService.sendMessage(request)
   }
 
 

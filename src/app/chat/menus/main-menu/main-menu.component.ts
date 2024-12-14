@@ -27,7 +27,7 @@ import {GroupChat} from "../../../entities/models/group.chat";
 })
 export class MainMenuComponent  implements OnInit{
 
-  protected filters = ['Direct Messages', 'Groups', 'Notifications', 'Archived']
+  protected filters = ['Direct', 'Groups', 'Notifications', 'Archived']
   protected selectedFilter: string = 'Groups'
   protected selectedChat?: Chat
 

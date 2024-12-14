@@ -45,12 +45,8 @@ export class ChatListener {
       next: (event) => {
         if (event){
           const message = this.mapping.messageConversion(event)
-          const chat = user.directChats.find((chat) => chat.chatId == message.chatId)
-          if(chat){
-            chat.messages.push(message)
-          }
+          user.directChats.find((chat) => chat.chatId == message.chatId)?.messages.push(message)
         }
-
       },
       error: (err) => {
         console.log(err)
@@ -63,12 +59,9 @@ export class ChatListener {
       next: (event) => {
         if (event){
           const message = this.mapping.messageConversion(event)
-          const chat = user.groupChats.find((chat) => chat.chatId == message.chatId)
-          if(chat){
-            chat.messages.push(message)
-          }
+          console.log(message)
+          user.groupChats.find((chat) => chat.chatId == message.chatId)?.messages.push(message)
         }
-
       },
       error: (err) => {
         console.log(err)

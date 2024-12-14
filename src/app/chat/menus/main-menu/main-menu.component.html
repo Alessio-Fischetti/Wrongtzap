@@ -27,16 +27,30 @@
         <ion-col sizeSm="12">
           <ion-content>
             <ion-list lines="inset" id="inbox-list">
-              @for (chat of filteredDirectChats; track $index) {
-                  @if(true){
+              @switch (selectedFilter){
+                @case ("Groups"){
+                  @for (chat of filteredGroups ; track $index) {
                     <ion-menu-toggle autoHide="false">
                       <app-chat-item (onChatClick)="updateChatView($event)" [chat]="chat"></app-chat-item>
                     </ion-menu-toggle>
+                    @if (filteredGroups.length === 0){
+                      <ion-item>
+                        <ion-label>No chat matches your search</ion-label>
+                      </ion-item>
+                    }
                   }
-              @if (filteredDirectChats.length === 0){
-                <ion-item>
-                  <ion-label>No chat matches your search</ion-label>
-                </ion-item>
+                }
+                @case ("Direct"){
+                  @for (chat of filteredDirectChats; track $index) {
+                      <ion-menu-toggle autoHide="false">
+                        <app-chat-item (onChatClick)="updateChatView($event)" [chat]="chat"></app-chat-item>
+                      </ion-menu-toggle>
+                    @if (filteredDirectChats.length === 0){
+                      <ion-item>
+                        <ion-label>No chat matches your search</ion-label>
+                      </ion-item>
+                    }
+                }
               }
             }
           </ion-list>

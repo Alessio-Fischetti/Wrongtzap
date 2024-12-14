@@ -35,14 +35,27 @@ export class ChatService {
 
     sendMessage(message: MessageRequest){
         this.stomp.publish({
-          destination: `/api/chat/message/add`,
+          destination: `/api/messages/add`,
           body: JSON.stringify(message),
           headers: this.headers })
     }
 
-    createChat(message: MessageRequest){
-
+    createChat(request: {firstUserId: string, secondUserId: string}) {
+      this.stomp.publish({
+        destination: `/api/chats/create`,
+        body: JSON.stringify(request),
+        headers: this.headers
+      })
     }
+
+
+  createGroup(request: {name: string, adminId: string, userIds: string[]}) {
+    this.stomp.publish({
+      destination: `/api/groups/create`,
+      body: JSON.stringify(request),
+      headers: this.headers
+    })
+  }
 
     chatListener(){
       return this.stomp.watch(`/topic/chats`, this.headers).pipe(

@@ -4,5 +4,5 @@ export type MessageRequest = {
     userId: string
     chatId: string
     body: string
-    timestamp: number
+  type: string
 }

@@ -1,12 +1,14 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {UserSummary} from "../../../entities/summaries/user.summary";
 import {Chat} from "../../../entities/models/base/chat";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {faCommentMedical} from "@fortawesome/free-solid-svg-icons";
+import {faCommentMedical, faX} from "@fortawesome/free-solid-svg-icons";
 import {DirectChat} from "../../../entities/models/direct.chat";
+import {ChatService} from "../../../services/chat.service";
+import {GroupChat} from "../../../entities/models/group.chat";
 
 @Component({
   selector: 'app-creation-menu',
@@ -18,28 +20,37 @@ import {DirectChat} from "../../../entities/models/direct.chat";
 export class CreationMenuComponent  implements OnInit {
   @Input()friends!: UserSummary[]
   @Input()chats!: DirectChat[]
-  @Output()chatEvent = new EventEmitter<Chat>()
+  @Input()userId!: string
+  @Output()chatEvent = new EventEmitter<DirectChat>()
 
   protected readonly onsubmit = onsubmit;
   protected readonly faCommentMedical = faCommentMedical;
 
-  protected form!: FormGroup;
+  protected newGroup!: FormGroup;
+  protected readonly faX = faX;
   protected filter: string = ""
   protected filteredFriends: UserSummary[] = []
+  protected selectedFriends: UserSummary[] = []
   protected isGroup: boolean = false;
 
-  constructor() { }
+  constructor(
+    private chatService: ChatService,
+  ) {
+    this.newGroup= new FormGroup({
+      "name": new FormControl("", [Validators.required]),
+    })
+  }
 
   ngOnInit() {
     this.filteredFriends = this.friends
   }
 
-  filterFriends(friendId: string) {
+  filterFriends(friendId: any) {
     this.filteredFriends = this.friends.filter(
       friend => friend.userId.includes(friendId))
   }
 
-  doesDirectChatExist(userId: string) {
+  newDirectChat(userId: string) {
     const chatExists = this.chats.find(
       (chat) =>
         chat.participants[0].userId == userId || chat.participants[1].userId == userId
@@ -48,14 +59,36 @@ export class CreationMenuComponent  implements OnInit {
     if(chatExists != undefined){
       this.chatEvent.emit(chatExists)
     }else{
-      this.publishDirectMessage(userId)
+      this.chatService.createChat({firstUserId: this.userId, secondUserId: userId})
     }
   }
 
-  publishDirectMessage(userId: string){
+  newGroupChat() {
+    if(this.newGroup.valid && this.name && this.selectedFriends.length > 0){
+      const name = this.name.value
+      const userIds = this.selectedFriends.map(friend => friend.userId)
+      userIds.push(this.userId)
+      const adminId = this.userId
 
+      this.chatService.createGroup({name: name, adminId: adminId, userIds: userIds})
+    }
   }
 
 
-  protected readonly console = console;
+  selectFriend(selectedFriend: UserSummary){
+    if(!this.selectedFriends.includes(selectedFriend))
+    this.selectedFriends.push(selectedFriend)
+  }
+
+  deselectFriend(selectedFriend: UserSummary){
+    this.selectedFriends = this.selectedFriends.filter( friend => selectedFriend.userId != friend.userId)
+  }
+
+
+
+  get name(){
+    return this.newGroup.get("name")
+  }
+
+
 }

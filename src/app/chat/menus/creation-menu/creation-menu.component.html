@@ -34,15 +34,12 @@
                 <ion-avatar aria-hidden="true" slot="start">
                     <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
                 </ion-avatar>
-                <ion-button (click)="console.log($event)" class="d-flex justify-content-start flex-grow-1" fill="clear">
+                <ion-button (click)="newDirectChat(friend.userId)" class="d-flex justify-content-start flex-grow-1" fill="clear">
                   <ion-label class="d-flex flex-column align-items-start">
                     <strong>
                       {{friend.username}}
                     </strong>
                     <br>
-                    <ion-note>
-                      {{friend.userId}}
-                    </ion-note>
                   </ion-label>
                 </ion-button>
               </ion-item>
@@ -52,12 +49,18 @@
       </ion-content>
     </ion-row>
   } @else {
-    <form [formGroup]="form" (ngSubmit)="onsubmit">
-      <ion-row class="d-flex justify-content-center">
-        <ion-col sizeSm="12" class="d-flex justify-content-center">
-          <ion-avatar>
-            <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-          </ion-avatar>
+    <form [formGroup]="newGroup">
+
+      <ion-row>
+        <ion-col sizeSm="12">
+          <ion-button (click)="newGroupChat()" fill="clear" class="d-flex w-100">
+            <ion-avatar class="d-flex align-items-center justify-content-between" aria-hidden="true" slot="start">
+              <fa-icon size="2x" [icon]="faCommentMedical"></fa-icon>
+            </ion-avatar>
+            <ion-label>
+              Create new Group
+            </ion-label>
+          </ion-button>
         </ion-col>
       </ion-row>
 
@@ -68,26 +71,56 @@
             label-placement="floating"
             fill="outline"
             placeholder="Enter text"
-            formControlName="GroupName"
+            formControlName="name"
           ></ion-input>
         </ion-col>
       </ion-row>
 
-      <ion-row class="d-flex justify-content-center">
-        <ion-col sizeSm="8">
-          <ion-input
-            label="Group description"
-            label-placement="floating"
-            fill="outline"
-            placeholder="Enter text"
-            formControlName="GroupDescription">
-          </ion-input>
+      <ion-row>
+        <ion-col sizeSm="12">
+          <ion-searchbar
+            placeholder="search friends"
+            animated="true"
+            (ionInput)="filterFriends($event.detail.value)"
+          >
+          </ion-searchbar>
         </ion-col>
       </ion-row>
 
       <ion-row>
-        <ion-searchbar></ion-searchbar>
+        <ion-list>
+          @for(friend of selectedFriends; track $index){
+            <ion-chip class="d-flex justify-content-between align-items-center">
+              <ion-avatar>
+                <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <ion-label>{{friend.username}}</ion-label>
+              <fa-icon [icon]="faX" (click)="deselectFriend(friend)" size="sm"></fa-icon>
+            </ion-chip>
+          }
+        </ion-list>
+      </ion-row>
+
+      <ion-row>
+        @for (friend of filteredFriends; track $index){
+          <ion-col sizeSm="12">
+            <ion-item class="d-flex">
+              <ion-avatar aria-hidden="true" slot="start">
+                <img alt=""  src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+              </ion-avatar>
+              <ion-button (click)="selectFriend(friend)" class="d-flex justify-content-start flex-grow-1" fill="clear">
+                <ion-label class="d-flex flex-column align-items-start">
+                  <strong>
+                    {{friend.username}}
+                  </strong>
+                  <br>
+                </ion-label>
+              </ion-button>
+            </ion-item>
+          </ion-col>
+        }
       </ion-row>
     </form>
+
   }
 </ion-grid>

@@ -19,7 +19,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private authService: AuthService, private router: Router, private session: SessionService, private cd: ChangeDetectorRef) {
     this.formGroup = new FormGroup({
-      userMail: new FormControl("", [Validators.required, Validators.pattern(/^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,}$/)]),
+      userMail: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
       userPassword: new FormControl("", [Validators.required, Validators.pattern(/^[\w<~`!@#$%^&*()_\-+={[}]|:;"'<,>.?\/]{8,20}$/)])
     })
    }
