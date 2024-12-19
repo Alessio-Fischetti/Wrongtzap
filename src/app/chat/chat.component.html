@@ -25,13 +25,13 @@
                           <app-creation-menu
                             [chats]="user.directChats"
                             [friends]="user.friends"
-                            [userId]="user.userId"
+                            [userId]="user.profile.userId"
                             (chatEvent)="changeSelectedChat($event)">
                           </app-creation-menu>
                         }
                         @case ('Friends'){
                           <app-friends-menu
-                            [userId]="user.userId"
+                            [userId]="user.profile.userId"
                             [friends]="user.friends">
                           </app-friends-menu>
                         }

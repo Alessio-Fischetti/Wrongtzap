@@ -1,6 +1,5 @@
 import { MessageResponse } from "./message.response"
-import { UserResponse } from "./user.response"
-import {UserSummary} from "../summaries/user.summary";
+import {UserSummary} from "../models/user.summary";
 
 export type DirectChatResponse = {
     chatId: string,

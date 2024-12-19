@@ -18,7 +18,6 @@ export class AuthService {
     return this.http.post(`${environment.apiUrl}/auth/register`, register).pipe(
       tap((resolve)=> {
         const token = resolve as {jwt: string}
-        console.log(token)
         this.session.saveToken(token.jwt)
       })
     )

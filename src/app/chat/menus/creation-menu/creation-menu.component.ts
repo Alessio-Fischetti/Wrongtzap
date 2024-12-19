@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
-import {UserSummary} from "../../../entities/summaries/user.summary";
+import {UserSummary} from "../../../entities/models/user.summary";
 import {Chat} from "../../../entities/models/base/chat";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCommentMedical, faX} from "@fortawesome/free-solid-svg-icons";

@@ -1,5 +1,5 @@
 import {MessageResponse} from "./message.response";
-import {UserSummary} from "../summaries/user.summary";
+import {UserSummary} from "../models/user.summary";
 
 export type GroupChatResponse = {
   chatId: string,

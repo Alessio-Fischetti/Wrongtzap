@@ -1,11 +1,11 @@
 import {Message} from "./message";
-import {UserSummary} from "../summaries/user.summary";
 import {Chat} from "./base/chat";
+import { Profile } from "./profile";
 
 export interface DirectChat extends Chat{
   type: "direct"
   readonly chatId: string
   messages: Message[]
-  participants: UserSummary[]
+  participants: Profile[]
   archived: string[]
 }

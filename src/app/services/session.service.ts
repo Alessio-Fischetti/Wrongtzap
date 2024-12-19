@@ -45,9 +45,9 @@ export class SessionService {
     const userId = sessionStorage.getItem("userid")
 
     if(username && userId)
-      return {username: username,userId: userId}
+      return {username: username,userId: userId, image: null}
     else
-      return {username: '',userId:''}
+      return {username: '',userId:'', image: null}
   }
 
   saveToken(token: string){

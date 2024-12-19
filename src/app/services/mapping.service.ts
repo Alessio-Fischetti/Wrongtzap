@@ -8,7 +8,8 @@ import {UserResponse} from "../entities/responses/user.response";
 import {GroupChatResponse} from "../entities/responses/group.chat.response";
 import {GroupChat} from "../entities/models/group.chat";
 import {DirectChat} from "../entities/models/direct.chat";
-import {UserSummary} from "../entities/summaries/user.summary";
+import {Profile} from "../entities/models/profile";
+import {UserSummary} from "../entities/models/user.summary";
 
 @Injectable({
     providedIn: 'root'
@@ -17,18 +18,22 @@ export class MappingService {
 
     userConversion(user: UserResponse): User{
       return {
-        userId:user.userId,
-        username: user.username,
+        profile: {
+          userId: user.userId,
+          username: user.username,
+          image: null
+        },
         directChats: this.bulkChatConversion(user.directChats),
         groupChats: this.bulkGroupConversion(user.groupChats),
-        friends: this.bulkFriendConversion(user.friends),
+        friends: this.bulkProfileConversion(user.friends),
       }
     }
 
-    bulkFriendConversion(friends: UserSummary[]): UserSummary[]{
+    bulkProfileConversion(friends: UserSummary[]): Profile[]{
       return friends.map(friend => ({
         userId: friend.userId,
         username: friend.username,
+        image: null
       }))
     }
 
@@ -36,7 +41,7 @@ export class MappingService {
       return chats.map(chat => ({
         type: "direct",
         chatId: chat.chatId,
-        participants: chat.participants,
+        participants: this.bulkProfileConversion(chat.participants),
         messages: this.bulkMessageConversion(chat.messages),
         archived: this.bulkIdConversion(chat.archived),
     }));
@@ -47,8 +52,8 @@ export class MappingService {
         type: "group",
         chatId: chat.chatId,
         name: chat.name,
-        participants: this.bulkSummaryConversion(chat.participants),
-        admins: this.bulkSummaryConversion(chat.admins),
+        participants: this.bulkProfileConversion(chat.participants),
+        admins: this.bulkProfileConversion(chat.admins),
         messages: this.bulkMessageConversion(chat.messages),
         archived: this.bulkIdConversion(chat.archived)
       }))
@@ -65,12 +70,6 @@ export class MappingService {
         }))
     }
 
-    bulkSummaryConversion(summary: ReadonlyArray<UserSummary>): UserSummary[]{
-      return summary.map(user => ({
-        username: user.username,
-        userId: user.userId,
-      }))
-    }
 
     bulkIdConversion(ids: ReadonlyArray<string>): string[]{
       return ids.map(id => id)
@@ -81,7 +80,7 @@ export class MappingService {
     return {
       type: "direct",
       chatId: chat.chatId,
-      participants: chat.participants,
+      participants: this.bulkProfileConversion(chat.participants),
       messages: this.bulkMessageConversion(chat.messages),
       archived: chat.archived
     }
@@ -93,16 +92,14 @@ export class MappingService {
       type: "group",
       chatId: chat.chatId,
       name: chat.name,
-      participants: chat.participants,
-      admins: chat.admins,
+      participants: this.bulkProfileConversion(chat.participants),
+      admins: this.bulkProfileConversion(chat.admins),
       messages: this.bulkMessageConversion(chat.messages),
       archived: chat.archived
     }
   }
 
-
-
-    messageConversion(message: MessageResponse): Message{
+  messageConversion(message: MessageResponse): Message{
         return {
           sender: message.username,
           senderId: message.userId,

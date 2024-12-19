@@ -4,7 +4,7 @@ import {SectionComponent} from "../../../sections/section.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {UserSummary} from "../../../entities/summaries/user.summary";
+import {UserSummary} from "../../../entities/models/user.summary";
 import {UserService} from "../../../services/user.service";
 
 @Component({

@@ -1,11 +1,11 @@
-import {UserSummary} from "../summaries/user.summary";
+
 import {DirectChat} from "./direct.chat";
 import {GroupChat} from "./group.chat";
+import {Profile} from "./profile";
 
 export interface User{
-  readonly userId: string
-  username: string
+  profile: Profile
   directChats: DirectChat[]
   groupChats: GroupChat[]
-  friends: UserSummary[]
+  friends: Profile[]
 }

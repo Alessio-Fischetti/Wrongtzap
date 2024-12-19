@@ -7,7 +7,7 @@ import { StompService } from '../config/stomp/stomp.service';
 import {SessionService} from "./session.service";
 import {UserResponse} from "../entities/responses/user.response";
 import {environment} from "../config/environments/environment";
-import {UserSummary} from "../entities/summaries/user.summary";
+import {Profile} from "../entities/models/profile";
 
 
 @Injectable({
@@ -58,7 +58,11 @@ export class UserService {
   friendListenerInit(userId: string){
     return this.stomp.watch(`/topic/users/${userId}/friends`, this.headers).pipe(
       map((event) => {
-        return JSON.parse(event.body) as UserSummary | undefined
+        const converted = JSON.parse(event.body) as Profile | undefined
+        if(converted){
+          converted.image = null
+        }
+        return converted
       })
     )
   }

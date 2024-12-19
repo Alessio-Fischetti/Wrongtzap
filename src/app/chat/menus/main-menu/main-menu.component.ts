@@ -17,6 +17,7 @@ import {
 import {FormsModule} from "@angular/forms";
 import {DirectChat} from "../../../entities/models/direct.chat";
 import {GroupChat} from "../../../entities/models/group.chat";
+import {FileService} from "../../../services/file.service";
 
 @Component({
   selector: 'app-main-menu',
@@ -44,6 +45,7 @@ export class MainMenuComponent  implements OnInit{
     private chatService: ChatService,
     private conversionService: MappingService,
     private sessionService: SessionService,
+    protected fileService: FileService,
   ) {
     addIcons({
       mailOutline, mailSharp, paperPlaneOutline,
@@ -71,6 +73,7 @@ export class MainMenuComponent  implements OnInit{
       group => group.name.includes(name)
     )
   }
+
 
   updateChatView(event: any){
     this.selectedChatChanged.emit(event)
