@@ -39,7 +39,7 @@ export class UserService {
     }
   }
 
-  addFriend(request: {senderId: string, receiverId: string}){
+  addFriend(request: {senderId: number, receiverId: number}){
     this.stomp.publish({
       destination: `/api/user/friend/add`,
       body: JSON.stringify(request),
@@ -47,7 +47,7 @@ export class UserService {
     })
   }
 
-  userListenerInit(userId: string){
+  userListenerInit(userId: number){
     return this.stomp.watch(`/topic/users/${userId}`, this.headers).pipe(
       map((event) => {
         return JSON.parse(event.body) as UserResponse | undefined
@@ -55,7 +55,7 @@ export class UserService {
     )
   }
 
-  friendListenerInit(userId: string){
+  friendListenerInit(userId: number){
     return this.stomp.watch(`/topic/users/${userId}/friends`, this.headers).pipe(
       map((event) => {
         const converted = JSON.parse(event.body) as Profile | undefined
@@ -67,10 +67,10 @@ export class UserService {
     )
   }
 
-  retrieveUser(email: string): Observable<any> {
+  retrieveUser(userId: number): Observable<any> {
     const USER_QUERY = gql`
-      query ($email: String!) {
-        user(userId: $email) {
+      query ($userId: Float!) {
+        user(userId: $userId) {
           userId
           username
           directChats {
@@ -121,7 +121,7 @@ export class UserService {
 
     return this.apollo.query({
       query: USER_QUERY,
-      variables: { email },
+      variables: { userId },
       fetchPolicy: 'network-only',
     });
   }

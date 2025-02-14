@@ -8,14 +8,12 @@ import { DatePipe } from '@angular/common';
 import { checkmarkSharp, checkmarkDoneSharp } from "ionicons/icons"
 import { addIcons } from 'ionicons';
 @Component({
-  selector: 'message',
-  templateUrl: './message.component.html',
-  styleUrls: ['./message.component.scss'],
-  standalone: true,
-  imports: [IonIcon,
-    IonChip,
-    DatePipe
-  ]
+    selector: 'message',
+    templateUrl: './message.component.html',
+    styleUrls: ['./message.component.scss'],
+    imports: [IonIcon,
+        DatePipe
+    ]
 })
 export class MessageComponent  implements OnInit {
 

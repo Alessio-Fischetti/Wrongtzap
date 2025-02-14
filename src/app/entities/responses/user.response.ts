@@ -5,7 +5,7 @@ import {UserSummary} from "../models/user.summary";
 
 export type UserResponse = {
     username: string
-    userId: string
+    userId: number
     directChats: DirectChatResponse[]
     groupChats: GroupChatResponse[]
     friends: UserSummary[]

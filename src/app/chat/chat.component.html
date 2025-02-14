@@ -4,18 +4,23 @@
               <ion-grid class="h-100">
                 <ion-row class="h-100">
 
-                  <ion-col id="side-menu" sizeSm="1" class="d-flex flex-column justify-content-end align-items-center">
+                  <ion-col id="side-menu" sizeSm="2" class="d-flex flex-column justify-content-end align-items-center">
                     <ion-segment [(ngModel)]="selectedPage" class="d-flex flex-column align-items-center justify-content-center">
                       @for(option of options; track  $index){
                         <ion-segment-button [value]="option[0]" class="d-flex align-items-center justify-content-center">
-                          <fa-icon [icon]="option[1]"></fa-icon>
+                          <fa-icon [icon]="option[1]" size="lg"></fa-icon>
                         </ion-segment-button>
                       }
+                      <ion-segment-button value="Profile">
+                        <ion-avatar class="d-flex justify-content-center align-items-center">
+                          <img class="h-50 w-50" [src]="Defaults.avatar">
+                        </ion-avatar>
+                      </ion-segment-button>
                     </ion-segment>
                   </ion-col>
 
 
-                  <ion-col sizeSm="11">
+                  <ion-col sizeSm="10">
                     @if (loading) {
                       <ion-loading></ion-loading>
                     }
@@ -34,6 +39,9 @@
                             [userId]="user.profile.userId"
                             [friends]="user.friends">
                           </app-friends-menu>
+                        }
+                        @case ('Profile'){
+                          <app-profile-menu></app-profile-menu>
                         }
                         @default {
                           <app-main-menu

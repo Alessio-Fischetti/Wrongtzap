@@ -40,7 +40,7 @@ export class ChatService {
           headers: this.headers })
     }
 
-    createChat(request: {firstUserId: string, secondUserId: string}) {
+    createChat(request: {firstUserId: number, secondUserId: number}) {
       this.stomp.publish({
         destination: `/api/chats/create`,
         body: JSON.stringify(request),
@@ -49,7 +49,7 @@ export class ChatService {
     }
 
 
-  createGroup(request: {name: string, adminId: string, userIds: string[]}) {
+  createGroup(request: {name: string, adminId: number, userIds: number[]}) {
     this.stomp.publish({
       destination: `/api/groups/create`,
       body: JSON.stringify(request),

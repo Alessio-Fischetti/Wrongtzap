@@ -8,20 +8,13 @@ import { Status } from 'src/app/entities/models/status';
 import { Message } from 'src/app/entities/models/message';
 import {DirectChat} from "../../../entities/models/direct.chat";
 import {GroupChat} from "../../../entities/models/group.chat";
+import {IonicModule} from "@ionic/angular";
 
 @Component({
-  selector: 'app-chat-item',
-  templateUrl: './chat-item.component.html',
-  styleUrls: ['./chat-item.component.scss'],
-  standalone: true,
-  imports: [IonAvatar,
-    IonItem,
-    IonLabel,
-    RouterLink,
-    RouterLinkActive,
-    IonNote,
-    IonBadge
-    ]
+    selector: 'app-chat-item',
+    templateUrl: './chat-item.component.html',
+    styleUrls: ['./chat-item.component.scss'],
+    imports: [IonicModule]
 })
 export class ChatItemComponent  implements OnInit {
 

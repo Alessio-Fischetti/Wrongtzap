@@ -1,18 +1,14 @@
 <ion-grid class="h-100 d-flex flex-column">
 
-      <ion-row>
-        @for (item of filters; track $index) {
-          <ion-col sizeSm="12" sizeMd="5" sizeLg="4" sizeXl="3" class="d-flex align-items-stretch justify-content-center">
-            <app-sections
-              class="d-flex align-items-stretch justify-content-center"
-              (click)="selectedFilter = item"
-              [label]="item"
-              [selected]="item === selectedFilter">
-            </app-sections>
-          </ion-col>
-        }
-      </ion-row>
-
+  <ion-row>
+    @for(item of filters; track $index){
+      <app-chip-filter
+      [item]="item"
+      [isSelected]="selectedFilter === item.label"
+      (changeSelection)="changeFilter($event)"
+      />
+    }
+  </ion-row>
 
   <ion-row>
     <ion-searchbar

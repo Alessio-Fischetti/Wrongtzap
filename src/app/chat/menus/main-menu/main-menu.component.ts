@@ -18,22 +18,43 @@ import {FormsModule} from "@angular/forms";
 import {DirectChat} from "../../../entities/models/direct.chat";
 import {GroupChat} from "../../../entities/models/group.chat";
 import {FileService} from "../../../services/file.service";
+import {MenubarModule} from "primeng/menubar";
+import {MenuItem} from "primeng/api";
+import {ChipModule} from "primeng/chip";
+import {ChipFilterComponent} from "../../../sections/chip-filter/chip-filter.component";
 
 @Component({
-  selector: 'app-main-menu',
-  templateUrl: './main-menu.component.html',
-  styleUrls: ['./main-menu.component.scss'],
-  standalone: true,
-  imports: [IonicModule, ChatItemComponent, FormsModule, FaIconComponent, SectionComponent]
+    selector: 'app-main-menu',
+    templateUrl: './main-menu.component.html',
+    styleUrls: ['./main-menu.component.scss'],
+    imports: [IonicModule, ChatItemComponent, FormsModule, SectionComponent, MenubarModule, ChipModule, ChipFilterComponent]
 })
 export class MainMenuComponent  implements OnInit{
 
-  protected filters = ['Direct', 'Groups', 'Notifications', 'Archived']
   protected selectedFilter: string = 'Groups'
   protected selectedChat?: Chat
 
   @Output() selectedChatChanged = new EventEmitter<DirectChat|GroupChat>();
   @Input()  chats!: {direct: DirectChat[], group: GroupChat[]}
+
+  protected filters: MenuItem[] = [
+    {
+      label: 'Direct',
+      icon: 'pi pi-comment'
+    },
+    {
+      label: 'Groups',
+      icon: 'pi pi-comments'
+    },
+    {
+      label: 'Notifications',
+      icon: 'pi pi-bell'
+    },
+    {
+      label: 'Archived',
+      icon: 'pi pi-download'
+    }
+  ]
 
   protected filteredDirectChats: DirectChat[] = []
   protected filteredGroups: GroupChat[] = []
@@ -56,6 +77,7 @@ export class MainMenuComponent  implements OnInit{
     });
   }
 
+
   ngOnInit(): void {
     this.filteredGroups = this.chats.group
     this.filteredDirectChats = this.chats.direct
@@ -74,9 +96,13 @@ export class MainMenuComponent  implements OnInit{
     )
   }
 
-
   updateChatView(event: any){
     this.selectedChatChanged.emit(event)
+  }
+
+  changeFilter(selection: string | undefined){
+    if(selection)
+      this.selectedFilter = selection;
   }
 
 }

@@ -9,18 +9,18 @@ import {faCommentMedical, faX} from "@fortawesome/free-solid-svg-icons";
 import {DirectChat} from "../../../entities/models/direct.chat";
 import {ChatService} from "../../../services/chat.service";
 import {GroupChat} from "../../../entities/models/group.chat";
+import {Button} from "primeng/button";
 
 @Component({
-  selector: 'app-creation-menu',
-  templateUrl: './creation-menu.component.html',
-  styleUrls: ['./creation-menu.component.scss'],
-  standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule]
+    selector: 'app-creation-menu',
+    templateUrl: './creation-menu.component.html',
+    styleUrls: ['./creation-menu.component.scss'],
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule, Button]
 })
 export class CreationMenuComponent  implements OnInit {
   @Input()friends!: UserSummary[]
   @Input()chats!: DirectChat[]
-  @Input()userId!: string
+  @Input()userId!: number
   @Output()chatEvent = new EventEmitter<DirectChat>()
 
   protected readonly onsubmit = onsubmit;
@@ -47,10 +47,10 @@ export class CreationMenuComponent  implements OnInit {
 
   filterFriends(friendId: any) {
     this.filteredFriends = this.friends.filter(
-      friend => friend.userId.includes(friendId))
+      friend => friend.userId == friendId)
   }
 
-  newDirectChat(userId: string) {
+  newDirectChat(userId: number) {
     const chatExists = this.chats.find(
       (chat) =>
         chat.participants[0].userId == userId || chat.participants[1].userId == userId

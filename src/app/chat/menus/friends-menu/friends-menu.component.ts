@@ -6,20 +6,37 @@ import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserSummary} from "../../../entities/models/user.summary";
 import {UserService} from "../../../services/user.service";
+import {ChipFilterComponent} from "../../../sections/chip-filter/chip-filter.component";
+import {MenuItem} from "primeng/api";
+import {Button} from "primeng/button";
 
 @Component({
-  selector: 'app-friends-menu',
-  templateUrl: './friends-menu.component.html',
-  styleUrls: ['./friends-menu.component.scss'],
-  standalone: true,
-  imports: [IonicModule, SectionComponent, FontAwesomeModule, ReactiveFormsModule]
+    selector: 'app-friends-menu',
+    templateUrl: './friends-menu.component.html',
+    styleUrls: ['./friends-menu.component.scss'],
+  imports: [IonicModule, SectionComponent, FontAwesomeModule, ReactiveFormsModule, ChipFilterComponent, Button]
 })
 export class FriendsMenuComponent  implements OnInit {
 
   protected readonly sections = ['Online', 'Sent requests', 'Pending requests', 'Add']
   protected readonly faPaperPlane = faPaperPlane;
 
-  @Input()userId!: string
+  protected section: MenuItem[] = [
+    {
+      label: 'Online',
+      icon: 'pi pi-wave-pulse'
+    },
+    {
+      label: 'Pending',
+      icon: 'pi pi-hourglass'
+    },
+    {
+      label: 'Add',
+      icon: 'pi pi-user-plus'
+    }
+  ]
+
+  @Input()userId!: number
   @Input()friends!: UserSummary[]
   protected selectedSection: string = 'Online'
   protected form: FormGroup;
@@ -43,12 +60,17 @@ export class FriendsMenuComponent  implements OnInit {
       this.userService.searchUser(this.receiverId.value).then(
         (valid) => {
           if(valid){
-            this.userService.addFriend({senderId: this.userId, receiverId: this.receiverId!.value})
+            this.userService.addFriend({senderId: Number(this.userId), receiverId: this.receiverId!.value})
             this.form.reset()
           }
         }
       )
     }
+  }
+
+  selectSection(section: string | undefined){
+    if(section)
+      this.selectedSection = section;
   }
 
 }

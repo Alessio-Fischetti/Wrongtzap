@@ -4,14 +4,13 @@ import { addIcons } from 'ionicons';
 import { happy, send } from 'ionicons/icons';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { FormsModule } from '@angular/forms';
+import {IonicModule} from "@ionic/angular";
 @Component({
-  selector: 'chat-footer',
-  templateUrl: './chat-footer.component.html',
-  styleUrls: ['./chat-footer.component.scss'],
-  standalone: true,
-  imports: [IonPopover, IonTabButton, IonButton, IonItem, IonIcon, IonSearchbar, IonInput, IonContent, IonTitle, IonToolbar, IonFooter, 
-    PickerComponent, FormsModule
-  ],
+    selector: 'chat-footer',
+    templateUrl: './chat-footer.component.html',
+    styleUrls: ['./chat-footer.component.scss'],
+    imports: [IonicModule, PickerComponent, FormsModule
+    ]
 })
 export class ChatFooterComponent {
 

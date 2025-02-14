@@ -1,3 +1,5 @@
+@layer reset, primeng;
+
 app-chat-item{
   z-index: 999;
 }
@@ -9,3 +11,6 @@ ion-content{
 scrollable{
   overflow-y: scroll !important;
 }
+
+
+

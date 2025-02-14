@@ -5,20 +5,20 @@ import { Message } from 'src/app/entities/models/message';
 import { MessageComponent } from './message/message.component';
 import { Status } from 'src/app/entities/models/status';
 import {SessionService} from "../../../services/session.service";
+import {IonicModule} from "@ionic/angular";
 
 @Component({
-  selector: 'chat-message-list',
-  templateUrl: './chat-message-list.component.html',
-  styleUrls: ['./chat-message-list.component.scss'],
-  standalone: true,
-  imports: [IonContent, MessageComponent]
+    selector: 'chat-message-list',
+    templateUrl: './chat-message-list.component.html',
+    styleUrls: ['./chat-message-list.component.scss'],
+    imports: [IonicModule, MessageComponent]
 })
 export class ChatMessageListComponent implements AfterViewInit {
 
   @ViewChildren(MessageComponent) messageComponent!: QueryList<MessageComponent>
   @Input() messages: Message[] = []
 
-  userId!: string
+  userId!: number
 
   constructor(session: SessionService,) {
     const profile = session.getProfile()
@@ -57,7 +57,7 @@ observeMessage(messageComponent: MessageComponent, index: number) {
     observer.observe(messageComponent.elementRef.nativeElement);
   }
 
-  isSent(userId: string): boolean {
+  isSent(userId: number): boolean {
     return userId == this.userId
   }
 

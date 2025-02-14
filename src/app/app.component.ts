@@ -8,21 +8,14 @@ import { SectionComponent } from './sections/section.component';
 import { ChatItemComponent } from './chat/components/chat-item/chat-item.component';
 import { ChatMainContentComponent } from './chat/components/chat-main-content/chat-main-content-component';
 import { Chat } from './entities/models/base/chat';
+import {IonicModule} from "@ionic/angular";
 
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  styleUrls: ['app.component.scss'],
-  standalone: true,
-  imports: [IonTitle, IonToolbar, IonFooter, IonCol, IonRow, IonGrid, RouterLink,
-     RouterLinkActive,
-      CommonModule,
-       IonApp,
-       ChatItemComponent,
-       ChatMainContentComponent,
-        IonSplitPane, IonMenu, IonContent, IonList, IonListHeader, IonNote, IonMenuToggle, IonItem, IonIcon, IonLabel, IonRouterLink, IonRouterOutlet,SectionComponent],
-
+    selector: 'app-root',
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.scss'],
+    imports: [IonicModule, CommonModule]
 })
 export class AppComponent {
 

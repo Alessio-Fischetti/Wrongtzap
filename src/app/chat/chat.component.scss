@@ -100,3 +100,12 @@ ion-menu ion-content {
     --padding-top: 0;
     --padding-bottom: 0;
   }
+
+  ion-grid{
+    --ion-grid-padding: 0;
+  }
+
+  #side-menu{
+    background-color: #343a40;
+    --ion-grid-column-padding: 0;
+  }

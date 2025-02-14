@@ -1,14 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { IonHeader, IonToolbar, IonButtons, IonAvatar, IonTitle, IonMenuButton } from "@ionic/angular/standalone";
+import {IonicModule} from "@ionic/angular";
 
 @Component({
-  selector: 'chat-header',
-  templateUrl: './chat-header.component.html',
-  styleUrls: ['./chat-header.component.scss'],
-  standalone: true,
-  imports: [IonTitle, IonAvatar, IonButtons, IonToolbar, IonHeader, IonMenuButton
-
-  ]
+    selector: 'chat-header',
+    templateUrl: './chat-header.component.html',
+    styleUrls: ['./chat-header.component.scss'],
+    imports: [IonicModule]
 })
 export class ChatHeaderComponent {
 

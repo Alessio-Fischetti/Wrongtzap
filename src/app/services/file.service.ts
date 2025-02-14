@@ -9,14 +9,20 @@ export class FileService {
   constructor(private http: HttpClient) {
   }
 
-  uploadFile(file: File, entityId: string, entityType: string) {
+  uploadFile(file: File, entityId: number, entityType: string) {
     const formData = new FormData();
 
     formData.append('file', file);
-    formData.append('entityId', entityId);
+    formData.append('entityId', entityId.toString());
     formData.append('entityType', entityType);
 
-    this.http.post(`${environment.apiUrl}/files/upload`, formData).subscribe()
+    formData.forEach((item) => console.log(item))
+    console.log(formData)
+
+
+
+    this.http.post(
+      `${environment.apiUrl}/files/upload`, formData).subscribe()
   }
 
   downloadFile() {

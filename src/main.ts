@@ -2,9 +2,6 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
 import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
 
-
-
-
 import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
@@ -22,6 +19,9 @@ import { inject } from '@angular/core';
 import { createClient } from 'graphql-ws';
 import { getMainDefinition } from '@apollo/client/utilities';
 import { StompService, stompServiceFactory } from './app/config/stomp/stomp.service';
+import {providePrimeNG} from "primeng/config";
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {DefaultTheme} from "./theme/themes";
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -29,6 +29,12 @@ bootstrapApplication(AppComponent, {
     { provide: StompService, useFactory: stompServiceFactory },
 
     provideIonicAngular(),
+    provideAnimationsAsync(),
+    providePrimeNG({
+      theme: {
+        preset: DefaultTheme
+      }
+    }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
     provideHttpClient(withInterceptors([authInterceptor])),
     provideApollo(() => createApollo())

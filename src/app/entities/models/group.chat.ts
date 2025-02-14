@@ -4,7 +4,7 @@ import {Profile} from "./profile";
 
 export interface GroupChat extends Chat{
   type: "group"
-  readonly chatId: string
+  readonly chatId: number
   name: string
   messages: Message[]
   participants: Profile[]

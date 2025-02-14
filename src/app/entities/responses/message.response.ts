@@ -1,7 +1,7 @@
 export type MessageResponse = {
     username: string
-    userId: string
-    chatId: string
+    userId: number
+    chatId: number
     content: string
     timestamp: number
 }

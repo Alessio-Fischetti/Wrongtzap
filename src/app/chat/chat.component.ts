@@ -20,13 +20,14 @@ import {DirectChat} from "../entities/models/direct.chat";
 import {GroupChat} from "../entities/models/group.chat";
 import {ChatListener} from "../config/listeners/chat.listener";
 import {UserListener} from "../config/listeners/user.listener";
+import {ProfileMenuComponent} from "./menus/profile-menu/profile-menu.component";
+import {Defaults} from "../config/defaults";
 
 
 @Component({
-  selector: 'app-chat',
-  templateUrl: './chat.component.html',
-  styleUrls: ['./chat.component.scss'],
-  standalone: true,
+    selector: 'app-chat',
+    templateUrl: './chat.component.html',
+    styleUrls: ['./chat.component.scss'],
   imports: [IonicModule,
     MainMenuComponent,
     FriendsMenuComponent,
@@ -34,7 +35,7 @@ import {UserListener} from "../config/listeners/user.listener";
     FormsModule,
     CommonModule,
     ChatMainContentComponent,
-    FontAwesomeModule],
+    FontAwesomeModule, ProfileMenuComponent]
 })
 
 export class ChatComponent implements OnInit, OnDestroy {
@@ -44,7 +45,6 @@ export class ChatComponent implements OnInit, OnDestroy {
     ['Friends', faUserGroup],
     ['Creation', faCommentMedical],
     ['List', faList],
-    ['Profile', faUser]
   ]
 
   protected selectedPage: string = 'List'
@@ -90,7 +90,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userListener.unsubscribe()
   }
 
-  async loadUser(id: string): Promise<void> {
+  async loadUser(id: number): Promise<void> {
     const response = await firstValueFrom(this.userService.retrieveUser(id));
     this.user = this.mapping.userConversion(response.data.user);
   }
@@ -98,4 +98,6 @@ export class ChatComponent implements OnInit, OnDestroy {
   changeSelectedChat(chat: DirectChat|GroupChat) {
     this.selectedChat = chat
   }
+
+  protected readonly Defaults = Defaults;
 }

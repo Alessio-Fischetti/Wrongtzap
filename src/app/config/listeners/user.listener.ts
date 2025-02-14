@@ -12,7 +12,7 @@ export class UserListener {
   constructor(private userService: UserService) {
 
   }
-  userListener(userId: string){
+  userListener(userId: number){
     this.subs.push(this.userService.userListenerInit(userId).subscribe({
       next: (event) => {
         if (event){
@@ -26,7 +26,7 @@ export class UserListener {
   }
 
 
-  friendListener(user: User, userId: string){
+  friendListener(user: User, userId: number){
     this.subs.push(this.userService.friendListenerInit(userId).subscribe({
       next: (event) => {
         if (event){

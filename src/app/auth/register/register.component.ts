@@ -8,11 +8,10 @@ import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../config/auth/auth.service';
 import {SessionService} from "../../services/session.service";
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss'],
-  standalone: true,
-  imports: [ButtonModule, IonicModule, CardModule, FormsModule, ReactiveFormsModule, RouterModule ]
+    selector: 'app-register',
+    templateUrl: './register.component.html',
+    styleUrls: ['./register.component.scss'],
+    imports: [ButtonModule, IonicModule, CardModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class RegisterComponent implements OnInit {
 

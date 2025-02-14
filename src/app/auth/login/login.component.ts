@@ -7,11 +7,10 @@ import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../config/auth/auth.service';
 import { SessionService } from '../../services/session.service';
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-  standalone: true,
-  imports: [ButtonModule, IonicModule, CardModule, FormsModule, ReactiveFormsModule, RouterModule ]
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    styleUrls: ['./login.component.scss'],
+    imports: [ButtonModule, IonicModule, CardModule, FormsModule, ReactiveFormsModule, RouterModule]
 })
 export class LoginComponent implements OnInit {
 
