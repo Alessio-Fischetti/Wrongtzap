@@ -6,6 +6,7 @@ import { MessageComponent } from './message/message.component';
 import { Status } from 'src/app/entities/models/status';
 import {SessionService} from "../../../services/session.service";
 import {IonicModule} from "@ionic/angular";
+import {ProfileService} from "../../../services/profile.service";
 
 @Component({
     selector: 'chat-message-list',
@@ -18,10 +19,10 @@ export class ChatMessageListComponent implements AfterViewInit {
   @ViewChildren(MessageComponent) messageComponent!: QueryList<MessageComponent>
   @Input() messages: Message[] = []
 
-  userId!: number
+  userId!: string
 
-  constructor(session: SessionService,) {
-    const profile = session.getProfile()
+  constructor(profileService: ProfileService,) {
+    const profile = profileService.getProfile()
       this.userId = profile.userId
   }
 
@@ -57,8 +58,8 @@ observeMessage(messageComponent: MessageComponent, index: number) {
     observer.observe(messageComponent.elementRef.nativeElement);
   }
 
-  isSent(userId: number): boolean {
-    return userId == this.userId
+  isSent(userId: string): boolean {
+    return userId === this.userId
   }
 
 }

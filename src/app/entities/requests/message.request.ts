@@ -1,8 +1,8 @@
 import { Status } from "../models/status"
 
 export interface MessageRequest  {
-  userId: number
-  chatId: number
+  userId: string
+  chatId: string
   body: string
   type: string
 }

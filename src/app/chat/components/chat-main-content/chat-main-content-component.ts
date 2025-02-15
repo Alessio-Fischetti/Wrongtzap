@@ -8,6 +8,7 @@ import { ChatService } from 'src/app/services/chat.service';
 import {DirectChat} from "../../../entities/models/direct.chat";
 import {GroupChat} from "../../../entities/models/group.chat";
 import {IonicModule} from "@ionic/angular";
+import {ProfileService} from "../../../services/profile.service";
 
 
 @Component({
@@ -20,7 +21,7 @@ import {IonicModule} from "@ionic/angular";
 export class ChatMainContentComponent {
 
   constructor(
-    private sessionService: SessionService,
+    private profileService: ProfileService,
     private chatService: ChatService
   ) { }
 
@@ -28,7 +29,7 @@ export class ChatMainContentComponent {
 
   newMessage(message: string){
     if(this.chat){
-      const user = this.sessionService.getProfile().userId
+      const user = this.profileService.getProfile().userId
       const request: MessageRequest = {
         userId: user,
         chatId: this.chat!.chatId,

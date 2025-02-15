@@ -36,7 +36,7 @@ export class FriendsMenuComponent  implements OnInit {
     }
   ]
 
-  @Input()userId!: number
+  @Input()userId!: string
   @Input()friends!: UserSummary[]
   protected selectedSection: string = 'Online'
   protected form: FormGroup;

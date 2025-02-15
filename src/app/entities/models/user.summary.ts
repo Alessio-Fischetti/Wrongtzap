@@ -1,4 +1,4 @@
 export interface UserSummary {
-  userId: number
+  userId: string
   username: string
 }

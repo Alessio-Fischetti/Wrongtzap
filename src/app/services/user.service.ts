@@ -47,7 +47,7 @@ export class UserService {
     })
   }
 
-  userListenerInit(userId: number){
+  userListenerInit(userId: string){
     return this.stomp.watch(`/topic/users/${userId}`, this.headers).pipe(
       map((event) => {
         return JSON.parse(event.body) as UserResponse | undefined
@@ -55,21 +55,21 @@ export class UserService {
     )
   }
 
-  friendListenerInit(userId: number){
+  friendListenerInit(userId: string){
     return this.stomp.watch(`/topic/users/${userId}/friends`, this.headers).pipe(
       map((event) => {
         const converted = JSON.parse(event.body) as Profile | undefined
         if(converted){
-          converted.image = null
+          converted.image = ''
         }
         return converted
       })
     )
   }
 
-  retrieveUser(userId: number): Observable<any> {
+  retrieveUser(userId: string): Observable<any> {
     const USER_QUERY = gql`
-      query ($userId: Float!) {
+      query ($userId: String!) {
         user(userId: $userId) {
           userId
           username

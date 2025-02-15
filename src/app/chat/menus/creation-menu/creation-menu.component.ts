@@ -20,7 +20,7 @@ import {Button} from "primeng/button";
 export class CreationMenuComponent  implements OnInit {
   @Input()friends!: UserSummary[]
   @Input()chats!: DirectChat[]
-  @Input()userId!: number
+  @Input()userId!: string
   @Output()chatEvent = new EventEmitter<DirectChat>()
 
   protected readonly onsubmit = onsubmit;
@@ -50,7 +50,7 @@ export class CreationMenuComponent  implements OnInit {
       friend => friend.userId == friendId)
   }
 
-  newDirectChat(userId: number) {
+  newDirectChat(userId: string) {
     const chatExists = this.chats.find(
       (chat) =>
         chat.participants[0].userId == userId || chat.participants[1].userId == userId

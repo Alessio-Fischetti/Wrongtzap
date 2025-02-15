@@ -22,6 +22,8 @@ import {ChatListener} from "../config/listeners/chat.listener";
 import {UserListener} from "../config/listeners/user.listener";
 import {ProfileMenuComponent} from "./menus/profile-menu/profile-menu.component";
 import {Defaults} from "../config/defaults";
+import {FileService} from "../services/file.service";
+import {ProfileService} from "../services/profile.service";
 
 
 @Component({
@@ -54,11 +56,12 @@ export class ChatComponent implements OnInit, OnDestroy {
   protected loading: boolean = true;
 
   constructor(
-    private session: SessionService,
+
     private userService: UserService,
     private chatListener: ChatListener,
     private userListener: UserListener,
     private mapping : MappingService,
+    private profileService: ProfileService,
   ) {
     addIcons({
       mailOutline, mailSharp, paperPlaneOutline,
@@ -71,7 +74,7 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.profile = this.session.getProfile()
+    this.profile = this.profileService.getProfile();
     this.loadUser(this.profile.userId).then(
       () => {
         this.chatListener.directChatListener(this.user)
@@ -90,7 +93,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.userListener.unsubscribe()
   }
 
-  async loadUser(id: number): Promise<void> {
+  async loadUser(id: string): Promise<void> {
     const response = await firstValueFrom(this.userService.retrieveUser(id));
     this.user = this.mapping.userConversion(response.data.user);
   }

@@ -25,9 +25,6 @@
             <ion-list lines="inset" id="inbox-list">
               @switch (selectedFilter){
                 @case("Archived"){
-                  <ion-button (click)="this.fileService.downloadFile()">
-                    Click Me!
-                  </ion-button>
                 }
                 @case ("Groups"){
                   @for (chat of filteredGroups ; track $index) {

@@ -4,7 +4,7 @@ import { Profile } from "./profile";
 
 export interface DirectChat extends Chat{
   type: "direct"
-  readonly chatId: number
+  readonly chatId: string
   messages: Message[]
   participants: Profile[]
   archived: string[]

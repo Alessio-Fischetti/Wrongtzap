@@ -2,7 +2,7 @@ import {MessageResponse} from "./message.response";
 import {UserSummary} from "../models/user.summary";
 
 export type GroupChatResponse = {
-  chatId: number,
+  chatId: string,
   name: string,
   messages: MessageResponse[],
   participants: UserSummary[],

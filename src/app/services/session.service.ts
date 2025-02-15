@@ -40,16 +40,6 @@ export class SessionService {
     }
   }
 
-  getProfile(): Profile{
-    const username = sessionStorage.getItem("username")
-    const userId = sessionStorage.getItem("userid")
-
-    if(username && userId)
-      return {username: username,userId: Number(userId), image: null}
-    else
-      return {username: '',userId:0, image: null}
-  }
-
   saveToken(token: string){
     sessionStorage.setItem("token", token)
     sessionStorage.setItem("token-counter", "0")

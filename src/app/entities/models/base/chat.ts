@@ -1,6 +1,6 @@
 import {Message} from "../message";
 
 export interface Chat {
-  chatId: number;
+  chatId: string;
   messages: Message[];
 }

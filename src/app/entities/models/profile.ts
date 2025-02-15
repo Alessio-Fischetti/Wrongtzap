@@ -1,5 +1,5 @@
 export interface Profile{
-    readonly username: string
-    readonly userId: number
-    image: File | null;
+    username: string
+    userId: string
+    image: string
 }

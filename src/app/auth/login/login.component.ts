@@ -6,6 +6,7 @@ import { CardModule } from 'primeng/card';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../config/auth/auth.service';
 import { SessionService } from '../../services/session.service';
+import {ProfileService} from "../../services/profile.service";
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
@@ -16,7 +17,12 @@ export class LoginComponent implements OnInit {
 
   formGroup: FormGroup
 
-  constructor(private authService: AuthService, private router: Router, private session: SessionService, private cd: ChangeDetectorRef) {
+  constructor(private authService: AuthService,
+              private router: Router,
+              private session: SessionService,
+              private cd: ChangeDetectorRef,
+              private profileService: ProfileService,
+  ) {
     this.formGroup = new FormGroup({
       userMail: new FormControl("", [Validators.required, Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]),
       userPassword: new FormControl("", [Validators.required, Validators.pattern(/^[\w<~`!@#$%^&*()_\-+={[}]|:;"'<,>.?\/]{8,20}$/)])
@@ -51,15 +57,17 @@ export class LoginComponent implements OnInit {
       },
         complete: () => {
           this.session.saveProfile().then(() => {
+            this.profileService.storeProfile().then(() => {
               this.router.navigate(["/chat"]).then(() => {
-                this.session.handleSession()
-              })
-            }
-          )
+                this.session.handleSession();
+              });
+            });
+          });
         }
       })
     }
   }
+
 
   get userMail(){
     return this.formGroup.get("userMail")

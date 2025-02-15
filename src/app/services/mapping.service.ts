@@ -21,7 +21,7 @@ export class MappingService {
         profile: {
           userId: user.userId,
           username: user.username,
-          image: null
+          image: ''
         },
         directChats: this.bulkChatConversion(user.directChats),
         groupChats: this.bulkGroupConversion(user.groupChats),
@@ -33,7 +33,7 @@ export class MappingService {
       return friends.map(friend => ({
         userId: friend.userId,
         username: friend.username,
-        image: null
+        image: ''
       }))
     }
 

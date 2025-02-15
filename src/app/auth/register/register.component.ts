@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular'
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../config/auth/auth.service';
 import {SessionService} from "../../services/session.service";
+import {ProfileService} from "../../services/profile.service";
 @Component({
     selector: 'app-register',
     templateUrl: './register.component.html',
@@ -20,7 +21,8 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private session: SessionService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private profileService: ProfileService,
   ) {
     this.formGroup = new FormGroup({
       "userName": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
@@ -50,13 +52,13 @@ export class RegisterComponent implements OnInit {
           this.loading = false
         },
         complete: () => {
-          this.formGroup.reset()
           this.session.saveProfile().then(() => {
+            this.profileService.storeProfile().then(() => {
               this.router.navigate(["/chat"]).then(() => {
-                this.session.handleSession()
-              })
-            }
-          )
+                this.session.handleSession();
+              });
+            });
+          });
         }
       })
     }
