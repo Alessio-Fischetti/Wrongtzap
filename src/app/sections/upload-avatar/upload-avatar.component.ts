@@ -48,7 +48,11 @@ export class UploadAvatarComponent  implements OnInit {
     if (input.files && input.files.length > 0)
       switch (this.mode){
       case 'user':{
-        this.fileService.uploadFile(input.files[0], this.profile.userId, "user")
+        this.fileService.uploadFile(input.files[0], this.profile.userId, "user").subscribe({
+          error: (err) => {
+
+          }
+        })
         break;
       }
       default:{

@@ -1,7 +1,7 @@
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import {Injectable, Signal, signal, WritableSignal} from "@angular/core";
 import {environment} from "../config/environments/environment";
-import {firstValueFrom} from "rxjs";
+import {firstValueFrom, ReplaySubject} from "rxjs";
 @Injectable({
   providedIn: 'root'
 })
@@ -9,6 +9,9 @@ export class FileService {
 
   constructor(private http: HttpClient) {
   }
+
+  public medias: WritableSignal<Map<string, Map<string,Blob>>> = signal(new Map<string, Map<string, Blob>>())
+  // Map<ChatID, Map<MessageID, BLOB>>
 
   uploadFile(file: File, entityId: string, entityType: string) {
     const formData = new FormData();
@@ -20,7 +23,7 @@ export class FileService {
     formData.forEach((item) => console.log(item))
     console.log(formData)
 
-    this.http.post(`${environment.apiUrl}/files/upload`, formData).subscribe()
+    return this.http.post(`${environment.apiUrl}/files/upload`, formData)
   }
   async downloadFile(entityId: string, entityType: string): Promise<File> {
     const blob = await firstValueFrom( this.http.post(`${environment.apiUrl}/files/download`,
@@ -29,4 +32,7 @@ export class FileService {
     ))
     return new File([blob], `${entityType}File`, { type: blob.type });
   }
+
 }
+
+

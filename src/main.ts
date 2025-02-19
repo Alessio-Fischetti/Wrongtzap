@@ -22,6 +22,7 @@ import { StompService, stompServiceFactory } from './app/config/stomp/stomp.serv
 import {providePrimeNG} from "primeng/config";
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {DefaultTheme} from "./theme/themes";
+import {errorInterceptor} from "./app/config/error-handler/error.handler.interceptor";
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -36,7 +37,7 @@ bootstrapApplication(AppComponent, {
       }
     }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor,errorInterceptor])),
     provideApollo(() => createApollo())
   ],
 });
