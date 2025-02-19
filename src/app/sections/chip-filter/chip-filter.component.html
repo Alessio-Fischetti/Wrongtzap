@@ -1,0 +1,7 @@
+<p-chip
+  class="d-flex justify-content-center"
+  [label]="item.label"
+  [icon]="item.icon"
+  (click)="chipClicked(item.label)"
+  [styleClass]="isSelected ? 'selected' : 'normal'"
+/>

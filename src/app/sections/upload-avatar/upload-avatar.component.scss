@@ -1,0 +1,21 @@
+.outer{
+  position: relative;
+}
+
+.inner {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  aspect-ratio: 1/1;
+  bottom: 0;
+  left: 75%;
+  background-color: var(--p-primary-500);
+  border-radius: 50%;
+}
+
+.inner:hover{
+  transition-duration: 0.2s;
+  filter: brightness(120%);
+}

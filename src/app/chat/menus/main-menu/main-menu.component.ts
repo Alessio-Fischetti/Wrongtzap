@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {ChatItemComponent} from "../../components/chat-item/chat-item.component";
-import {FaIconComponent} from "@fortawesome/angular-fontawesome";
-import {SectionComponent} from "../../../sections/section.component";
 import {Chat} from "../../../entities/models/base/chat";
 import {ChatService} from "../../../services/chat.service";
 import {MappingService} from "../../../services/mapping.service";
@@ -27,7 +25,7 @@ import {ChipFilterComponent} from "../../../sections/chip-filter/chip-filter.com
     selector: 'app-main-menu',
     templateUrl: './main-menu.component.html',
     styleUrls: ['./main-menu.component.scss'],
-    imports: [IonicModule, ChatItemComponent, FormsModule, SectionComponent, MenubarModule, ChipModule, ChipFilterComponent]
+    imports: [IonicModule, ChatItemComponent, FormsModule, MenubarModule, ChipModule, ChipFilterComponent]
 })
 export class MainMenuComponent  implements OnInit{
 

@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {SectionComponent} from "../../../sections/section.component";
 import {FontAwesomeModule} from "@fortawesome/angular-fontawesome";
 import {faPaperPlane} from "@fortawesome/free-solid-svg-icons";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
@@ -14,7 +13,7 @@ import {Button} from "primeng/button";
     selector: 'app-friends-menu',
     templateUrl: './friends-menu.component.html',
     styleUrls: ['./friends-menu.component.scss'],
-  imports: [IonicModule, SectionComponent, FontAwesomeModule, ReactiveFormsModule, ChipFilterComponent, Button]
+  imports: [IonicModule, FontAwesomeModule, ReactiveFormsModule, ChipFilterComponent, Button]
 })
 export class FriendsMenuComponent  implements OnInit {
 
@@ -60,7 +59,7 @@ export class FriendsMenuComponent  implements OnInit {
       this.userService.searchUser(this.receiverId.value).then(
         (valid) => {
           if(valid){
-            this.userService.addFriend({senderId: Number(this.userId), receiverId: this.receiverId!.value})
+            this.userService.addFriend({senderId: this.userId, receiverId: this.receiverId!.value})
             this.form.reset()
           }
         }

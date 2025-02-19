@@ -39,9 +39,22 @@ export class UserService {
     }
   }
 
-  addFriend(request: {senderId: number, receiverId: number}){
+  addFriend(request: {senderId: string, receiverId: string}){
     this.stomp.publish({
       destination: `/api/user/friend/add`,
+      body: JSON.stringify(request),
+      headers: this.headers
+    })
+  }
+
+  editUsername(
+    request: {
+      userId: String,
+      description: string | null,
+      username: string | null
+    }){
+    this.stomp.publish({
+      destination: `/api/user/edit/username`,
       body: JSON.stringify(request),
       headers: this.headers
     })
@@ -111,6 +124,11 @@ export class UserService {
               timestamp
             }
             archived
+          }
+          friendRequest {
+            friendRequestId
+            senderId
+            receiverId
           }
           friends {
             userId

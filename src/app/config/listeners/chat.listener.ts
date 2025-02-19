@@ -14,6 +14,8 @@ export class ChatListener {
     private chatService: ChatService,
     private mapping: MappingService) {}
 
+
+
   directChatListener(user: User){
      this.subs.push(this.chatService.chatListener().subscribe({
        next: (event)=> {

@@ -1,0 +1,11 @@
+<ion-row>
+  <ion-col sizeSm="12">
+    <ion-searchbar
+      [placeholder]="placeHolder"
+      animated="true"
+      [ngModel]="filter"
+      (ngModelChange)="updateFilter($event)"
+    >
+    </ion-searchbar>
+  </ion-col>
+</ion-row>

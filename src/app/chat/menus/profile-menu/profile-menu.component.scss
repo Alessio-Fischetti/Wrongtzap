@@ -1,0 +1,42 @@
+.avatar{
+  aspect-ratio: 1/1;
+  font-size: xxx-large;
+  font-weight: bolder;
+}
+
+.header{
+  display: flex;
+  align-self: start;
+  justify-self: start;
+  font-weight: bolder;
+}
+
+.border {
+  padding: 5%;
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-bottom: 5px solid var(--p-primary-500) !important;
+}
+
+.outer{
+  position: relative;
+}
+
+.inner {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  cursor: pointer;
+  align-items: center;
+  aspect-ratio: 1/1;
+  bottom: 0;
+  left: 75%;
+  background-color: var(--p-primary-500);
+  border-radius: 50%;
+}
+
+.inner:hover{
+  transition-duration: 0.2s;
+  filter: brightness(120%);
+}

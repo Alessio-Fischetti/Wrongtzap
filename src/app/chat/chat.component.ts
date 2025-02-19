@@ -82,6 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy {
         this.chatListener.groupChatListener(this.user)
         this.chatListener.groupMessageListener(this.user)
         this.userListener.friendListener(this.user, this.profile.userId)
+        console.log(this.user.directChats, this.user.groupChats)
         this.loading = false
       }
     )

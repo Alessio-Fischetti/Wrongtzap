@@ -41,13 +41,15 @@
                           </app-friends-menu>
                         }
                         @case ('Profile'){
-                          <app-profile-menu></app-profile-menu>
+                          <app-profile-menu [profile]="user.profile"/>
                         }
-                        @default {
+                        @case ('List'){
                           <app-main-menu
                             [chats]="{direct: user.directChats, group: user.groupChats}"
                             (selectedChatChanged)="changeSelectedChat($event)">
                           </app-main-menu>
+                        }
+                        @default {
                         }
                       }
                     }

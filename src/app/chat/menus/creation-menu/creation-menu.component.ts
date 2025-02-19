@@ -10,12 +10,16 @@ import {DirectChat} from "../../../entities/models/direct.chat";
 import {ChatService} from "../../../services/chat.service";
 import {GroupChat} from "../../../entities/models/group.chat";
 import {Button} from "primeng/button";
+import {SearchbarComponent} from "../../../sections/searchbar/searchbar.component";
+import {DrawerModule} from "primeng/drawer";
+import {UploadAvatarComponent} from "../../../sections/upload-avatar/upload-avatar.component";
+import {group} from "@angular/animations";
 
 @Component({
     selector: 'app-creation-menu',
     templateUrl: './creation-menu.component.html',
     styleUrls: ['./creation-menu.component.scss'],
-  imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule, Button]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule, Button, SearchbarComponent, DrawerModule, UploadAvatarComponent]
 })
 export class CreationMenuComponent  implements OnInit {
   @Input()friends!: UserSummary[]
@@ -23,21 +27,21 @@ export class CreationMenuComponent  implements OnInit {
   @Input()userId!: string
   @Output()chatEvent = new EventEmitter<DirectChat>()
 
-  protected readonly onsubmit = onsubmit;
-  protected readonly faCommentMedical = faCommentMedical;
-
   protected newGroup!: FormGroup;
-  protected readonly faX = faX;
   protected filter: string = ""
   protected filteredFriends: UserSummary[] = []
   protected selectedFriends: UserSummary[] = []
-  protected isGroup: boolean = false;
+  protected isGroupMenu: boolean = false;
+  protected isGroupProfile: boolean = false;
+  protected selectionIsMade: boolean = true
+
+  protected readonly faX = faX;
 
   constructor(
     private chatService: ChatService,
   ) {
     this.newGroup= new FormGroup({
-      "name": new FormControl("", [Validators.required]),
+      "name": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
     })
   }
 
@@ -48,6 +52,19 @@ export class CreationMenuComponent  implements OnInit {
   filterFriends(friendId: any) {
     this.filteredFriends = this.friends.filter(
       friend => friend.userId == friendId)
+  }
+
+
+  selectFriend(selectedFriend: UserSummary){
+    if (this.isGroupMenu){
+      if(!this.selectedFriends.includes(selectedFriend))
+        this.selectedFriends.push(selectedFriend)
+    }else
+      this.newDirectChat(selectedFriend.userId)
+  }
+
+  deselectFriend(selectedFriend: UserSummary){
+    this.selectedFriends = this.selectedFriends.filter( friend => selectedFriend.userId != friend.userId)
   }
 
   newDirectChat(userId: string) {
@@ -74,21 +91,20 @@ export class CreationMenuComponent  implements OnInit {
     }
   }
 
-
-  selectFriend(selectedFriend: UserSummary){
-    if(!this.selectedFriends.includes(selectedFriend))
-    this.selectedFriends.push(selectedFriend)
+  toggleBottomButton(){
+    if(this.isGroupMenu){
+      this.isGroupMenu = false
+      this.isGroupProfile = true
+    }
+    else{
+      this.isGroupProfile = false
+      this.isGroupMenu = true
+    }
   }
-
-  deselectFriend(selectedFriend: UserSummary){
-    this.selectedFriends = this.selectedFriends.filter( friend => selectedFriend.userId != friend.userId)
-  }
-
-
-
   get name(){
     return this.newGroup.get("name")
   }
 
 
+  protected readonly group = group;
 }

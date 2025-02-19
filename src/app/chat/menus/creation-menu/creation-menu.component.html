@@ -1,34 +1,50 @@
+
 <ion-grid class="h-100 d-flex flex-column">
 
+  @if(isGroupProfile){
+
+    <form [formGroup]="newGroup" class="h-100 d-flex flex-column justify-content-center">
+      <app-upload-avatar></app-upload-avatar>
+      <ion-row class="d-flex justify-content-center">
+        <ion-col sizeSm="8">
+          <ion-input
+            formControlName="name"
+            label="Enter group name"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Enter text"
+            error-text="invalid name"
+          >
+          </ion-input>
+        </ion-col>
+      </ion-row>
+
+      <ion-row class="d-flex justify-content-center pb-3">
+        <p-button size="large" [rounded]="true" icon="pi pi-check"/>
+      </ion-row>
+
+    </form>
+  }
+  @else{
     <ion-row class="d-flex justify-content-center align-items-center">
       <ion-col sizeSm="2">
-          <p-button (click)="isGroup = !isGroup" [icon]="!isGroup? 'pi pi-comments' : 'pi pi-arrow-left'" [rounded]="true"/>
+        <p-button (click)="isGroupMenu = !isGroupMenu" [icon]="!isGroupMenu? 'pi pi-comments' : 'pi pi-arrow-left'" [rounded]="true"/>
       </ion-col>
       <ion-col size="10">
         <ion-label style="font-weight: bolder" class="d-flex align-items-center">
-          @if(!isGroup){
+          @if(!isGroupMenu){
             Create new Group
           } @else{
-            Go back to direct chat
+            Go back
           }
         </ion-label>
       </ion-col>
-    </ion-row>
-
-    <ion-row>
-      <ion-col sizeSm="12">
-        <ion-searchbar
-          placeholder="search friends"
-          animated="true"
-          [ngModel]="filter"
-          (ngModelChange)="filterFriends($event)"
-        >
-        </ion-searchbar>
+      <ion-col size="12">
+        <app-searchbar placeHolder="search friends" (filterUpdated)="filterFriends($event)"></app-searchbar>
       </ion-col>
     </ion-row>
 
-
-    <form [formGroup]="newGroup">
+    @if (isGroupMenu){
       <ion-row>
         <ion-list>
           @for(friend of selectedFriends; track $index){
@@ -42,41 +58,37 @@
           }
         </ion-list>
       </ion-row>
+    }
 
-      <ion-row>
-        @for (friend of filteredFriends; track $index){
-          <ion-col sizeSm="12">
-            <ion-item class="d-flex">
-              <ion-avatar aria-hidden="true" slot="start">
-                <img alt=""  src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </ion-avatar>
-              <ion-button (click)="selectFriend(friend)" class="d-flex justify-content-start flex-grow-1" fill="clear">
-                <ion-label class="d-flex flex-column align-items-start">
-                  <strong>
-                    {{friend.username}}
-                  </strong>
-                  <br>
-                </ion-label>
-              </ion-button>
-            </ion-item>
-          </ion-col>
-        }
-      </ion-row>
-    </form>
-
-  @if(isGroup){
-    <ion-row class="d-flex justify-content-center">
-      <ion-col sizeSm="8">
-        <ion-input
-          label="Enter group name"
-          label-placement="floating"
-          fill="outline"
-          placeholder="Enter text"
-          formControlName="name"
-        ></ion-input>
-      </ion-col>
+    <ion-row class="d-flex flex-grow-1">
+      @for (friend of filteredFriends; track $index){
+        <ion-col sizeSm="12">
+          <ion-item class="d-flex">
+            <ion-avatar aria-hidden="true" slot="start">
+              <img alt=""  src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+            </ion-avatar>
+            <ion-button (click)="selectFriend(friend)" class="d-flex justify-content-start flex-grow-1" fill="clear">
+              <ion-label class="d-flex flex-column align-items-start">
+                <strong>
+                  {{friend.username}}
+                </strong>
+                <br>
+              </ion-label>
+            </ion-button>
+          </ion-item>
+        </ion-col>
+      }
     </ion-row>
   }
 
+  @if (this.selectedFriends.length && (isGroupMenu || isGroupProfile)){
+    <ion-row class="d-flex justify-content-center pb-3">
+      <p-button size="large"
+                [rounded]="true"
+                [icon]="isGroupProfile ? 'pi pi-arrow-left' : 'pi pi-arrow-right'"
+                (click)="toggleBottomButton()"/>
+    </ion-row>
+  }
 
 </ion-grid>
+

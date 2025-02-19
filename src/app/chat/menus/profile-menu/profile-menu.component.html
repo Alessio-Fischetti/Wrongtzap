@@ -1,0 +1,23 @@
+<ion-grid class="h-100 d-flex flex-column">
+  <ion-row class="d-flex align-self-start justify-self-start">
+    <ion-col size="12">
+      <h1 class="header display-6">
+        Profile
+      </h1>
+    </ion-col>
+  </ion-row>
+
+  <ion-grid class="flex-grow-1 d-flex flex-column justify-content-center align-content-center">
+      <ion-row>
+        <app-upload-avatar mode="user"></app-upload-avatar>
+      </ion-row>
+      <ion-row class="d-flex justify-content-center align-items-center">
+        <app-dynamic-fields
+          [maxLength]="20"
+          [default]="profile.username"
+          (outputSent)="updateProfile($event)"
+          label="Username"
+        />
+      </ion-row>
+  </ion-grid>
+</ion-grid>

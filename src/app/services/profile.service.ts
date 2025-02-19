@@ -16,7 +16,7 @@ export class ProfileService {
 
     const userId = sessionStorage.getItem("userid")
 
-    if(userId) {
+    /*if(userId) {
       const file= await this.fileService.downloadFile(userId, 'user')
       const reader = new FileReader();
       reader.readAsDataURL(file)
@@ -25,7 +25,7 @@ export class ProfileService {
         const url = reader.result
         localStorage.setItem("userImage", url as string)
       }
-    }
+    }*/
   }
 
   getProfile():Profile{

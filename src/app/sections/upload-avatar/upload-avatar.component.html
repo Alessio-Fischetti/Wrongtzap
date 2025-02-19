@@ -1,0 +1,11 @@
+<ion-row>
+  <ion-col size="12" class="d-flex justify-content-center align-items-center">
+    <ion-avatar class="outer w-50 h-auto">
+      <img [src]="image" [alt]="Defaults.avatar">
+      <div class="inner w-25" (click)="startUpload()">
+        <input hidden #fileInput type="file" accept="image/*" (change)="onFileSelected($event)">
+        <i class="pi pi-camera"></i>
+      </div>
+    </ion-avatar>
+  </ion-col>
+</ion-row>

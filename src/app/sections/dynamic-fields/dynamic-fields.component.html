@@ -1,0 +1,28 @@
+ <ion-row class="d-flex justify-content-center align-items-center">
+    <ion-col size="10">
+        <ion-input
+          #input
+          [label]="label"
+          label-placement="floating"
+          fill="solid"
+          [(ngModel)]="default"
+          color="warning"
+          [placeholder]="default"
+          [disabled]="!editMode"
+          [maxlength]="maxLength"
+          (keydown)="detectKey($event)"
+          [counter]="editMode ? maxLength: undefined"
+        />
+    </ion-col>
+    <ion-col size="2">
+      @if (editMode){
+        <p-button icon="pi pi-send" (click)="sendOutput()" [rounded]="true"/>
+      } @else {
+        <p-button icon="pi pi-pencil" (click)="editMode = true" [rounded]="true"/>
+      }
+    </ion-col>
+  </ion-row>
+
+
+
+

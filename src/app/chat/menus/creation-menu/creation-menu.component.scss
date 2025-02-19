@@ -1,4 +1,9 @@
-
 ion-content{
   --background: transparent;
+}
+
+.drawer{
+  z-index: 999;
+  height: inherit;
+  width: inherit;
 }
