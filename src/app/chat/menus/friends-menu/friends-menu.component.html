@@ -11,49 +11,74 @@
       }
     </ion-row>
 
-  @if(selectedSection === 'Add'){
+  @switch (selectedSection){
+    @case ('Add'){
+      <ion-row class="d-flex align-items-center">
+        <ion-col [formGroup]="form" sizeSm="10">
+          <ion-input
+            formControlName="userId"
+            label="Enter User-ID"
+            label-placement="floating"
+            fill="outline"
+            placeholder="Todalooo"
+          ></ion-input>
+        </ion-col>
 
-    <ion-row class="d-flex align-items-center">
-      <ion-col [formGroup]="form" sizeSm="10">
-        <ion-input
-          formControlName="userId"
-          label="Enter User-ID"
-          label-placement="floating"
-          fill="outline"
-          placeholder="Todalooo"
-        ></ion-input>
-      </ion-col>
+        <ion-col sizeSm="2">
+          <p-button (click)="sendRequest()" [rounded]="true" icon="pi pi-send"/>
+        </ion-col>
+      </ion-row>
+    }
+    @case ('Pending'){
+      <ion-row>
+        <ion-col sizeSm="12">
+          <ion-list>
+            @for (friend of userSync.friends(); track $index){
+              @if (friend.status === "PENDING"){
+                <ion-item class="d-flex justify-content-center">
+                  <ion-avatar aria-hidden="true" slot="start">
+                    <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <Strong>
+                      {{friend.username}}
+                    </Strong>
+                  </ion-label>
+                </ion-item>
+              }
+            }
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    }
+    @case ('Online'){
+      <ion-row>
+        <ion-searchbar
+          animated="true"
+          placeholder="Search"
+        ></ion-searchbar>
+      </ion-row>
 
-      <ion-col sizeSm="2">
-        <p-button (click)="sendRequest()" [rounded]="true" icon="pi pi-send"/>
-      </ion-col>
-    </ion-row>
-
-  } @else {
-    <ion-row>
-      <ion-searchbar
-        animated="true"
-        placeholder="Search"
-      ></ion-searchbar>
-    </ion-row>
-
-    <ion-row>
-      <ion-col sizeSm="12">
-        <ion-list>
-          @for (friend of friends; track $index){
-            <ion-item class="d-flex justify-content-center">
-              <ion-avatar aria-hidden="true" slot="start">
-                <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
-              </ion-avatar>
-              <ion-label>
-                <Strong>
-                  {{friend.username}}
-                </Strong>
-              </ion-label>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-col>
-    </ion-row>
+      <ion-row>
+        <ion-col sizeSm="12">
+          <ion-list>
+            @for (friend of userSync.friends(); track $index){
+              @if (friend.status === "ACCEPTED"){
+                <ion-item class="d-flex justify-content-center">
+                  <ion-avatar aria-hidden="true" slot="start">
+                    <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+                  </ion-avatar>
+                  <ion-label>
+                    <Strong>
+                      {{friend.username}}
+                    </Strong>
+                  </ion-label>
+                </ion-item>
+              }
+            }
+          </ion-list>
+        </ion-col>
+      </ion-row>
+    }
   }
 </ion-grid>

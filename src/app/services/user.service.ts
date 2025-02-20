@@ -8,6 +8,7 @@ import {SessionService} from "./session.service";
 import {UserResponse} from "../entities/responses/user.response";
 import {environment} from "../config/environments/environment";
 import {Profile} from "../entities/models/profile";
+import {Friend} from "../entities/models/friend";
 
 
 @Injectable({
@@ -41,7 +42,7 @@ export class UserService {
 
   addFriend(request: {senderId: string, receiverId: string}){
     this.stomp.publish({
-      destination: `/api/user/friend/add`,
+      destination: `/api/user/friend/send/request`,
       body: JSON.stringify(request),
       headers: this.headers
     })
@@ -60,10 +61,10 @@ export class UserService {
     })
   }
 
-  userListenerInit(userId: string){
-    return this.stomp.watch(`/topic/users/${userId}`, this.headers).pipe(
+  ProfileListenerInit(userId: string){
+    return this.stomp.watch(`/topic/users/${userId}/profile`, this.headers).pipe(
       map((event) => {
-        return JSON.parse(event.body) as UserResponse | undefined
+        return JSON.parse(event.body) as Profile | undefined
       })
     )
   }
@@ -71,7 +72,7 @@ export class UserService {
   friendListenerInit(userId: string){
     return this.stomp.watch(`/topic/users/${userId}/friends`, this.headers).pipe(
       map((event) => {
-        const converted = JSON.parse(event.body) as Profile | undefined
+        const converted = JSON.parse(event.body) as Friend | undefined
         if(converted){
           converted.image = ''
         }
@@ -125,14 +126,11 @@ export class UserService {
             }
             archived
           }
-          friendRequest {
-            friendRequestId
-            senderId
-            receiverId
-          }
           friends {
-            userId
-            username
+            friendshipId
+            receiverId
+            receiverUsername
+            status
           }
         }
       }`;

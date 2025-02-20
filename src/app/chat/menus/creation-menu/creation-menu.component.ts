@@ -14,6 +14,8 @@ import {SearchbarComponent} from "../../../sections/searchbar/searchbar.componen
 import {DrawerModule} from "primeng/drawer";
 import {UploadAvatarComponent} from "../../../sections/upload-avatar/upload-avatar.component";
 import {group} from "@angular/animations";
+import {ChatSync} from "../../../config/listeners/chat.sync";
+import {UserSync} from "../../../config/listeners/user.sync";
 
 @Component({
     selector: 'app-creation-menu',
@@ -21,10 +23,18 @@ import {group} from "@angular/animations";
     styleUrls: ['./creation-menu.component.scss'],
   imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule, Button, SearchbarComponent, DrawerModule, UploadAvatarComponent]
 })
-export class CreationMenuComponent  implements OnInit {
-  @Input()friends!: UserSummary[]
-  @Input()chats!: DirectChat[]
-  @Input()userId!: string
+export class CreationMenuComponent {
+
+  constructor(
+    private chatService: ChatService,
+    readonly chatSync: ChatSync,
+    readonly userSync : UserSync,
+  ) {
+    this.newGroup= new FormGroup({
+      "name": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
+    })
+  }
+
   @Output()chatEvent = new EventEmitter<DirectChat>()
 
   protected newGroup!: FormGroup;
@@ -33,25 +43,15 @@ export class CreationMenuComponent  implements OnInit {
   protected selectedFriends: UserSummary[] = []
   protected isGroupMenu: boolean = false;
   protected isGroupProfile: boolean = false;
-  protected selectionIsMade: boolean = true
 
   protected readonly faX = faX;
 
-  constructor(
-    private chatService: ChatService,
-  ) {
-    this.newGroup= new FormGroup({
-      "name": new FormControl("", [Validators.required, Validators.minLength(6), Validators.maxLength(20)]),
-    })
-  }
-
-  ngOnInit() {
-    this.filteredFriends = this.friends
-  }
 
   filterFriends(friendId: any) {
-    this.filteredFriends = this.friends.filter(
-      friend => friend.userId == friendId)
+    const friends = this.userSync.friends()
+    this.filteredFriends = friends.filter(
+      friend => friend.userId == friendId
+    )
   }
 
 
@@ -68,7 +68,9 @@ export class CreationMenuComponent  implements OnInit {
   }
 
   newDirectChat(userId: string) {
-    const chatExists = this.chats.find(
+    const chats = this.chatSync.chats()
+    const profile = this.userSync.profile()
+    const chatExists = chats.find(
       (chat) =>
         chat.participants[0].userId == userId || chat.participants[1].userId == userId
     )
@@ -76,16 +78,17 @@ export class CreationMenuComponent  implements OnInit {
     if(chatExists != undefined){
       this.chatEvent.emit(chatExists)
     }else{
-      this.chatService.createChat({firstUserId: this.userId, secondUserId: userId})
+      this.chatService.createChat({firstUserId: profile.userId, secondUserId: userId})
     }
   }
 
   newGroupChat() {
+    const profile = this.userSync.profile()
     if(this.newGroup.valid && this.name && this.selectedFriends.length > 0){
       const name = this.name.value
       const userIds = this.selectedFriends.map(friend => friend.userId)
-      userIds.push(this.userId)
-      const adminId = this.userId
+      userIds.push(profile.userId)
+      const adminId = profile.userId
 
       this.chatService.createGroup({name: name, adminId: adminId, userIds: userIds})
     }

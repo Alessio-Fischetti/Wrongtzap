@@ -20,6 +20,7 @@ import {MenubarModule} from "primeng/menubar";
 import {MenuItem} from "primeng/api";
 import {ChipModule} from "primeng/chip";
 import {ChipFilterComponent} from "../../../sections/chip-filter/chip-filter.component";
+import {ChatSync} from "../../../config/listeners/chat.sync";
 
 @Component({
     selector: 'app-main-menu',
@@ -27,13 +28,22 @@ import {ChipFilterComponent} from "../../../sections/chip-filter/chip-filter.com
     styleUrls: ['./main-menu.component.scss'],
     imports: [IonicModule, ChatItemComponent, FormsModule, MenubarModule, ChipModule, ChipFilterComponent]
 })
-export class MainMenuComponent  implements OnInit{
+export class MainMenuComponent {
 
-  protected selectedFilter: string = 'Groups'
-  protected selectedChat?: Chat
+  constructor(
+    private chatService: ChatService,
+    readonly chatSync: ChatSync,
+    protected fileService: FileService,
+  ) {
 
-  @Output() selectedChatChanged = new EventEmitter<DirectChat|GroupChat>();
-  @Input()  chats!: {direct: DirectChat[], group: GroupChat[]}
+    addIcons({
+      mailOutline, mailSharp, paperPlaneOutline,
+      paperPlaneSharp, heartOutline, heartSharp,
+      archiveOutline, archiveSharp, trashOutline,
+      trashSharp, warningOutline, warningSharp,
+      bookmarkOutline, bookmarkSharp
+    });
+  }
 
   protected filters: MenuItem[] = [
     {
@@ -54,42 +64,27 @@ export class MainMenuComponent  implements OnInit{
     }
   ]
 
+  @Output() selectedChatChanged = new EventEmitter<DirectChat|GroupChat>();
+
+  protected selectedFilter: string = 'Groups'
+  protected selectedChat?: Chat
+
   protected filteredDirectChats: DirectChat[] = []
   protected filteredGroups: GroupChat[] = []
-
   protected loading: boolean = true;
   protected search: string =''
 
-  constructor(
-    private chatService: ChatService,
-    private conversionService: MappingService,
-    private sessionService: SessionService,
-    protected fileService: FileService,
-  ) {
-    addIcons({
-      mailOutline, mailSharp, paperPlaneOutline,
-      paperPlaneSharp, heartOutline, heartSharp,
-      archiveOutline, archiveSharp, trashOutline,
-      trashSharp, warningOutline, warningSharp,
-      bookmarkOutline, bookmarkSharp
-    });
-  }
-
-
-  ngOnInit(): void {
-    this.filteredGroups = this.chats.group
-    this.filteredDirectChats = this.chats.direct
-  }
-
   searchChats(name: string){
-    this.filteredDirectChats= this.chats.direct.filter(
+    const chats = this.chatSync.chats()
+    this.filteredDirectChats = chats.filter(
       chat =>
         chat.participants[0].username.includes(name) || chat.participants[1].username.includes(name)
     )
   }
 
   searchGroups(name: string){
-    this.filteredGroups = this.chats.group.filter(
+    const groups = this.chatSync.groups()
+    this.filteredGroups = groups.filter(
       group => group.name.includes(name)
     )
   }

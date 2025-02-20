@@ -18,6 +18,7 @@ import {Dialog} from "primeng/dialog";
 import {DynamicFieldsComponent} from "../../../sections/dynamic-fields/dynamic-fields.component";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {UserService} from "../../../services/user.service";
+import {UserSync} from "../../../config/listeners/user.sync";
 
 @Component({
   selector: 'app-profile-menu',
@@ -37,18 +38,17 @@ import {UserService} from "../../../services/user.service";
 })
 export class ProfileMenuComponent{
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
-  @Input()profile!: Profile
 
   constructor(
     private fileService: FileService,
-    private profileService: ProfileService,
     private userService: UserService,
+    readonly userSync: UserSync
   ) {
   }
 
   updateProfile(username: string) {
     this.userService.editUsername({
-      userId: this.profile.userId,
+      userId: this.userSync.profile().userId ,
       username: username,
       description: null
     })

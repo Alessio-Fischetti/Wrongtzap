@@ -19,6 +19,8 @@ import {FloatLabel} from "primeng/floatlabel";
 import {OverlayBadge} from "primeng/overlaybadge";
 import {Badge, BadgeDirective} from "primeng/badge";
 import {Card} from "primeng/card";
+import {UserSync} from "../../config/listeners/user.sync";
+import {ChatSync} from "../../config/listeners/chat.sync";
 
 @Component({
   selector: 'app-dynamic-fields',
@@ -28,10 +30,11 @@ import {Card} from "primeng/card";
 })
 export class DynamicFieldsComponent {
 
-  @Input()default: string = ''
+  @Input()label: string = "Please Enter"
   @Input()minLength: number = 1;
   @Input()maxLength: number = 20;
-  @Input()label: string = 'Please Enter'
+  @Input()mode: string = ''
+  @Input()default: string = ""
 
   @Output() outputSent = new EventEmitter<string>();
   editMode: boolean = false;

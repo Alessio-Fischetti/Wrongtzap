@@ -10,6 +10,8 @@ import {GroupChat} from "../entities/models/group.chat";
 import {DirectChat} from "../entities/models/direct.chat";
 import {Profile} from "../entities/models/profile";
 import {UserSummary} from "../entities/models/user.summary";
+import {FriendResponse} from "../entities/responses/friend.response";
+import {Friend} from "../entities/models/friend";
 
 @Injectable({
     providedIn: 'root'
@@ -25,17 +27,29 @@ export class MappingService {
         },
         directChats: this.bulkChatConversion(user.directChats),
         groupChats: this.bulkGroupConversion(user.groupChats),
-        friends: this.bulkProfileConversion(user.friends),
+        friends: this.bulkFriendConversion(user.friends),
       }
     }
 
-    bulkProfileConversion(friends: UserSummary[]): Profile[]{
+
+  bulkProfileConversion(profile: UserSummary[]): Profile[]{
+    return profile.map(profile => ({
+      userId: profile.userId,
+      username: profile.userId,
+      image: ''
+    }))
+  }
+
+  bulkFriendConversion(friends: FriendResponse[]): Friend[]{
       return friends.map(friend => ({
-        userId: friend.userId,
-        username: friend.username,
+        userId: friend.receiverId,
+        username: friend.receiverUsername,
+        status: friend.status,
         image: ''
       }))
     }
+
+
 
     bulkChatConversion(chats: DirectChatResponse[]): DirectChat[]{
       return chats.map(chat => ({
@@ -44,7 +58,7 @@ export class MappingService {
         participants: this.bulkProfileConversion(chat.participants),
         messages: this.bulkMessageConversion(chat.messages),
         archived: this.bulkIdConversion(chat.archived),
-    }));
+      }));
     }
 
     bulkGroupConversion(chats: GroupChatResponse[]): GroupChat[]{

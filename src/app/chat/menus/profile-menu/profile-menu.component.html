@@ -14,7 +14,7 @@
       <ion-row class="d-flex justify-content-center align-items-center">
         <app-dynamic-fields
           [maxLength]="20"
-          [default]="profile.username"
+          [default]="userSync.profile().username"
           (outputSent)="updateProfile($event)"
           label="Username"
         />

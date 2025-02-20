@@ -18,8 +18,8 @@ import {UserService} from "../services/user.service";
 import {MappingService} from "../services/mapping.service";
 import {DirectChat} from "../entities/models/direct.chat";
 import {GroupChat} from "../entities/models/group.chat";
-import {ChatListener} from "../config/listeners/chat.listener";
-import {UserListener} from "../config/listeners/user.listener";
+import {ChatSync} from "../config/listeners/chat.sync";
+import {UserSync} from "../config/listeners/user.sync";
 import {ProfileMenuComponent} from "./menus/profile-menu/profile-menu.component";
 import {Defaults} from "../config/defaults";
 import {FileService} from "../services/file.service";
@@ -53,13 +53,13 @@ export class ChatComponent implements OnInit, OnDestroy {
   protected selectedChat?: DirectChat|GroupChat
   protected profile!: Profile
   protected user!: User
-  protected loading: boolean = true;
+  protected loading = true;
 
   constructor(
 
     private userService: UserService,
-    private chatListener: ChatListener,
-    private userListener: UserListener,
+    private chatSync: ChatSync,
+    private userSync: UserSync,
     private mapping : MappingService,
     private profileService: ProfileService,
   ) {
@@ -77,12 +77,8 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.profile = this.profileService.getProfile();
     this.loadUser(this.profile.userId).then(
       () => {
-        this.chatListener.directChatListener(this.user)
-        this.chatListener.directMessageListener(this.user)
-        this.chatListener.groupChatListener(this.user)
-        this.chatListener.groupMessageListener(this.user)
-        this.userListener.friendListener(this.user, this.profile.userId)
-        console.log(this.user.directChats, this.user.groupChats)
+        this.userSync.setFirstSignal(this.user.friends, this.user.profile)
+        this.chatSync.setFirstSignal(this.user.directChats, this.user.groupChats)
         this.loading = false
       }
     )
@@ -90,8 +86,8 @@ export class ChatComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    this.chatListener.unsubscribe()
-    this.userListener.unsubscribe()
+    this.chatSync.unsubscribe()
+    this.userSync.unsubscribe()
   }
 
   async loadUser(id: string): Promise<void> {
