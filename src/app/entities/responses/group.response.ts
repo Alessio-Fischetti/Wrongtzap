@@ -1,11 +1,12 @@
 import {MessageResponse} from "./message.response";
 import {UserSummary} from "../models/user.summary";
+import {PagedMessageResponse} from "./paged/paged.message.response";
 
-export type GroupChatResponse = {
+export type GroupResponse = {
   chatId: string,
   name: string,
-  messages: MessageResponse[],
-  participants: UserSummary[],
+  messages: PagedMessageResponse,
+  members: UserSummary[],
   admins: UserSummary[],
   archived: string[]
 }

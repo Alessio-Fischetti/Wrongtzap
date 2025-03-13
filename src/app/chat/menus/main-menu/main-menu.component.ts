@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 import {ChatItemComponent} from "../../components/chat-item/chat-item.component";
-import {Chat} from "../../../entities/models/base/chat";
+import {BaseChat} from "../../../entities/models/base/base.chat";
 import {ChatService} from "../../../services/chat.service";
 import {MappingService} from "../../../services/mapping.service";
 import {SessionService} from "../../../services/session.service";
@@ -13,8 +13,8 @@ import {
   trashOutline, trashSharp, warningOutline, warningSharp
 } from "ionicons/icons";
 import {FormsModule} from "@angular/forms";
-import {DirectChat} from "../../../entities/models/direct.chat";
-import {GroupChat} from "../../../entities/models/group.chat";
+import {Chat} from "../../../entities/models/chat";
+import {Group} from "../../../entities/models/group";
 import {FileService} from "../../../services/file.service";
 import {MenubarModule} from "primeng/menubar";
 import {MenuItem} from "primeng/api";
@@ -28,7 +28,7 @@ import {ChatSync} from "../../../config/listeners/chat.sync";
     styleUrls: ['./main-menu.component.scss'],
     imports: [IonicModule, ChatItemComponent, FormsModule, MenubarModule, ChipModule, ChipFilterComponent]
 })
-export class MainMenuComponent {
+export class MainMenuComponent implements OnInit{
 
   constructor(
     private chatService: ChatService,
@@ -64,26 +64,31 @@ export class MainMenuComponent {
     }
   ]
 
-  @Output() selectedChatChanged = new EventEmitter<DirectChat|GroupChat>();
+  @Output() selectedChatChanged = new EventEmitter<Chat|Group>();
 
   protected selectedFilter: string = 'Groups'
-  protected selectedChat?: Chat
+  protected selectedChat?: BaseChat
 
-  protected filteredDirectChats: DirectChat[] = []
-  protected filteredGroups: GroupChat[] = []
+  protected filteredDirectChats: Chat[] = []
+  protected filteredGroups: Group[] = []
   protected loading: boolean = true;
   protected search: string =''
 
+  ngOnInit() {
+    this.filteredGroups = this.chatSync.groups().content
+    this.filteredDirectChats = this.chatSync.chats().content
+  }
+
   searchChats(name: string){
-    const chats = this.chatSync.chats()
+    const chats = this.chatSync.chats().content
     this.filteredDirectChats = chats.filter(
       chat =>
-        chat.participants[0].username.includes(name) || chat.participants[1].username.includes(name)
+        chat.members[0].username.includes(name) || chat.members[1].username.includes(name)
     )
   }
 
   searchGroups(name: string){
-    const groups = this.chatSync.groups()
+    const groups = this.chatSync.groups().content
     this.filteredGroups = groups.filter(
       group => group.name.includes(name)
     )

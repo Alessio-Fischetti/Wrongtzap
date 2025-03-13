@@ -5,10 +5,11 @@ import { ChatMessageListComponent } from '../chat-message-list/chat-message-list
 import { SessionService } from 'src/app/services/session.service';
 import { MessageRequest } from 'src/app/entities/requests/message.request';
 import { ChatService } from 'src/app/services/chat.service';
-import {DirectChat} from "../../../entities/models/direct.chat";
-import {GroupChat} from "../../../entities/models/group.chat";
+import {Chat} from "../../../entities/models/chat";
+import {Group} from "../../../entities/models/group";
 import {IonicModule} from "@ionic/angular";
 import {ProfileService} from "../../../services/profile.service";
+import {UserSync} from "../../../config/listeners/user.sync";
 
 
 @Component({
@@ -22,10 +23,13 @@ export class ChatMainContentComponent {
 
   constructor(
     private profileService: ProfileService,
-    private chatService: ChatService
-  ) { }
+    private chatService: ChatService,
+    private userSync: UserSync,
+  ) {
+  }
 
-  @Input() chat?: DirectChat|GroupChat
+  @Input() chat?: Chat|Group
+
 
   newMessage(message: string){
     if(this.chat){
@@ -43,9 +47,14 @@ export class ChatMainContentComponent {
 
 
   getName(): string{
+    const userId = this.profileService.getProfile().userId
     if(this.chat?.type == "group")
       return this.chat.name
-    else
-      return `${this.chat?.participants[0].username}-${this.chat?.participants[1].username}`
+    else{
+      if(this.chat?.members[0].userId == userId)
+        return this.chat!.members[1].username
+      else
+        return this.chat!.members[0].username
+    }
   }
 }

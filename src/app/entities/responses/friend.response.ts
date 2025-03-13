@@ -1,6 +1,6 @@
 export type FriendResponse = {
-  friendShipId: string;
-  receiverId: string;
-  receiverUsername: string;
+  friendshipId: string;
+  userId: string;
+  username: string;
   status: string;
 }

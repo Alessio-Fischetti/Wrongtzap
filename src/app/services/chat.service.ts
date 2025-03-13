@@ -7,9 +7,11 @@ import { MessageRequest } from '../entities/requests/message.request';
 import { StompService } from '../config/stomp/stomp.service';
 import { MessageResponse } from '../entities/responses/message.response';
 import {SessionService} from "./session.service";
-import {DirectChatResponse} from "../entities/responses/direct.chat.response";
-import {GroupChat} from "../entities/models/group.chat";
-import {GroupChatResponse} from "../entities/responses/group.chat.response";
+import {ChatResponse} from "../entities/responses/chat.response";
+import {Group} from "../entities/models/group";
+import {GroupResponse} from "../entities/responses/group.response";
+import {PagedChatResponse} from "../entities/responses/paged/paged.chat.response";
+import {PagedGroupResponse} from "../entities/responses/paged/paged.group.response";
 
 
 @Injectable({
@@ -57,10 +59,27 @@ export class ChatService {
     })
   }
 
+  pageChatListener(userId: string){
+    return this.stomp.watch(`/topic/${userId}/pages/chats`, this.headers).pipe(
+      map((event) => {
+        return JSON.parse(event.body) as PagedChatResponse | undefined
+      })
+    )
+  }
+
+  pageGroupListener(userId: string){
+    return this.stomp.watch(`/topic/${userId}/pages/groups`, this.headers).pipe(
+      map((event) => {
+        return JSON.parse(event.body) as PagedGroupResponse | undefined
+      })
+    )
+  }
+
+
     chatListener(){
       return this.stomp.watch(`/topic/chats`, this.headers).pipe(
         map((event) => {
-          return JSON.parse(event.body) as DirectChatResponse | undefined
+          return JSON.parse(event.body) as ChatResponse | undefined
         })
       )
     }
@@ -68,7 +87,7 @@ export class ChatService {
     groupListener(){
       return this.stomp.watch(`/topic/groups`, this.headers).pipe(
         map((event) => {
-          return JSON.parse(event.body) as GroupChatResponse | undefined
+          return JSON.parse(event.body) as GroupResponse | undefined
         })
       )
     }

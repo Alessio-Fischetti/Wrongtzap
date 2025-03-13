@@ -16,8 +16,8 @@ import {User} from "../entities/models/user";
 import {firstValueFrom, Subscription} from "rxjs";
 import {UserService} from "../services/user.service";
 import {MappingService} from "../services/mapping.service";
-import {DirectChat} from "../entities/models/direct.chat";
-import {GroupChat} from "../entities/models/group.chat";
+import {Chat} from "../entities/models/chat";
+import {Group} from "../entities/models/group";
 import {ChatSync} from "../config/listeners/chat.sync";
 import {UserSync} from "../config/listeners/user.sync";
 import {ProfileMenuComponent} from "./menus/profile-menu/profile-menu.component";
@@ -50,7 +50,7 @@ export class ChatComponent implements OnInit, OnDestroy {
   ]
 
   protected selectedPage: string = 'List'
-  protected selectedChat?: DirectChat|GroupChat
+  protected selectedChat?: Chat|Group
   protected profile!: Profile
   protected user!: User
   protected loading = true;
@@ -78,10 +78,11 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.loadUser(this.profile.userId).then(
       () => {
         this.userSync.setFirstSignal(this.user.friends, this.user.profile)
-        this.chatSync.setFirstSignal(this.user.directChats, this.user.groupChats)
+        this.chatSync.setFirstSignal(this.user.chats, this.user.groups)
         this.loading = false
       }
     )
+
   }
 
 
@@ -92,10 +93,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   async loadUser(id: string): Promise<void> {
     const response = await firstValueFrom(this.userService.retrieveUser(id));
+    console.log(response.data.user)
     this.user = this.mapping.userConversion(response.data.user);
   }
 
-  changeSelectedChat(chat: DirectChat|GroupChat) {
+  changeSelectedChat(chat: Chat|Group) {
     this.selectedChat = chat
   }
 

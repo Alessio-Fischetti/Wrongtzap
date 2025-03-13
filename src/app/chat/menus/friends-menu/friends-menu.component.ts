@@ -59,7 +59,7 @@ export class FriendsMenuComponent {
       this.userService.searchUser(this.receiverId.value).then(
         (valid) => {
           if(valid){
-            this.userService.addFriend({senderId: profile.userId, receiverId: this.receiverId!.value})
+            this.userService.sendFriendRequest({senderId: profile.userId, receiverId: this.receiverId!.value})
             this.form.reset()
           }
         }
@@ -70,6 +70,22 @@ export class FriendsMenuComponent {
   selectSection(section: string | undefined){
     if(section)
       this.selectedSection = section;
+  }
+
+  acceptRequest(userId: string, friendshipId: string){
+    this.userService.acceptFriendRequest({
+      friendshipId: friendshipId,
+      senderId: userId,
+      receiverId: this.userSync.profile().userId
+    })
+  }
+
+  rejectRequest(userId: string, friendshipId: string){
+    this.userService.rejectFriendRequest({
+      friendshipId: friendshipId,
+      senderId: userId,
+      receiverId: this.userSync.profile().userId
+    })
   }
 
 }

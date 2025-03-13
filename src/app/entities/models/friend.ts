@@ -1,6 +1,7 @@
 export type Friend = {
-  userId: string;
+  friendshipId: string
   username: string;
+  userId: string;
   image: string;
   status: string;
 }

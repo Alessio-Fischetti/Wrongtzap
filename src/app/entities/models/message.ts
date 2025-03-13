@@ -1,12 +1,13 @@
 import { Status } from "./status";
 import {MessageResponse} from "../responses/message.response";
 
-export interface Message{
+export type Message = {
 
-  readonly sender: string;
-  readonly senderId: string;
+  readonly username: string;
+  readonly userId: string;
   readonly chatId: string;
   readonly timestamp: Date;
-  body: string;
+  content: string;
   status: Status;
+
 }

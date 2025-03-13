@@ -36,8 +36,13 @@ export class UserSync {
     this.subs.push(this.userService.friendListenerInit(profile.userId).subscribe({
       next: (event) => {
         if (event){
-          this._friends.update(friends => {
-            return [...friends, event]
+          this._friends.update((friends) => {
+            return friends.map((friend) => {
+              if(friend.friendshipId === event.friendshipId)
+                return event
+              else
+                return friend
+            })
           })
         }
       },

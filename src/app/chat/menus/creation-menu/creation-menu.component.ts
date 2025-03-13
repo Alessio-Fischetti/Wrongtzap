@@ -3,12 +3,12 @@ import {IonicModule} from "@ionic/angular";
 import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CommonModule} from "@angular/common";
 import {UserSummary} from "../../../entities/models/user.summary";
-import {Chat} from "../../../entities/models/base/chat";
+import {BaseChat} from "../../../entities/models/base/base.chat";
 import {FaIconComponent} from "@fortawesome/angular-fontawesome";
 import {faCommentMedical, faX} from "@fortawesome/free-solid-svg-icons";
-import {DirectChat} from "../../../entities/models/direct.chat";
+import {Chat} from "../../../entities/models/chat";
 import {ChatService} from "../../../services/chat.service";
-import {GroupChat} from "../../../entities/models/group.chat";
+import {Group} from "../../../entities/models/group";
 import {Button} from "primeng/button";
 import {SearchbarComponent} from "../../../sections/searchbar/searchbar.component";
 import {DrawerModule} from "primeng/drawer";
@@ -16,6 +16,7 @@ import {UploadAvatarComponent} from "../../../sections/upload-avatar/upload-avat
 import {group} from "@angular/animations";
 import {ChatSync} from "../../../config/listeners/chat.sync";
 import {UserSync} from "../../../config/listeners/user.sync";
+import {Friend} from "../../../entities/models/friend";
 
 @Component({
     selector: 'app-creation-menu',
@@ -23,7 +24,7 @@ import {UserSync} from "../../../config/listeners/user.sync";
     styleUrls: ['./creation-menu.component.scss'],
   imports: [IonicModule, CommonModule, ReactiveFormsModule, FaIconComponent, FormsModule, Button, SearchbarComponent, DrawerModule, UploadAvatarComponent]
 })
-export class CreationMenuComponent {
+export class CreationMenuComponent implements OnInit{
 
   constructor(
     private chatService: ChatService,
@@ -35,7 +36,7 @@ export class CreationMenuComponent {
     })
   }
 
-  @Output()chatEvent = new EventEmitter<DirectChat>()
+  @Output()chatEvent = new EventEmitter<Chat>()
 
   protected newGroup!: FormGroup;
   protected filter: string = ""
@@ -47,11 +48,15 @@ export class CreationMenuComponent {
   protected readonly faX = faX;
 
 
+  ngOnInit() {
+    this.filteredFriends = this.userSync.friends()
+  }
+
+
   filterFriends(friendId: any) {
     const friends = this.userSync.friends()
     this.filteredFriends = friends.filter(
-      friend => friend.userId == friendId
-    )
+      friend => friend.userId == friendId)
   }
 
 
@@ -68,11 +73,11 @@ export class CreationMenuComponent {
   }
 
   newDirectChat(userId: string) {
-    const chats = this.chatSync.chats()
+    const chats = this.chatSync.chats().content
     const profile = this.userSync.profile()
     const chatExists = chats.find(
       (chat) =>
-        chat.participants[0].userId == userId || chat.participants[1].userId == userId
+        chat.members[0].userId == userId || chat.members[1].userId == userId
     )
 
     if(chatExists != undefined){
